@@ -5,6 +5,9 @@ int main() {
 
     std::vector <unsigned> val(10);
     val = {1,2,3,4,5,6,7,8,9,10};
+   // doubly_linked_list a(val);
+   // a.swap_set(2,4,6,8);
+   // a.print();
 
     std::cout <<"The current list:" <<std::endl;
     doubly_linked_list obj(val);
@@ -62,16 +65,16 @@ int main() {
     doubly_linked_list obj5(obj3.split_set(3,6));
     obj5.print();
 
-    std::cout <<"New object created with equal operator to obj1." <<std::endl;
+    std::cout <<"New object (6) created with equal operator to obj1." <<std::endl;
     doubly_linked_list obj6 = obj;
     obj6.print();
 
-    std::cout <<"Obj6 is merged with obj3 to create a new object." <<std::endl;
-    doubly_linked_list obj7 = obj6 + obj3;
+    std::cout <<"Obj6 is merged with obj3 to create a new object(7)." <<std::endl;
+    doubly_linked_list obj7 = obj6 + obj3; //has an issue
     obj7.print();
 
     std::cout <<"Obj4 is appended unto Obj7." <<std::endl;
-    obj7 += obj4;
+    obj7 += obj4; //has an issue
     obj7.print();
 
     return 0;
