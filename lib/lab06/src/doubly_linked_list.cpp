@@ -106,7 +106,19 @@ doubly_linked_list::~doubly_linked_list() {
     {
         next=current->next;
         delete current;
+        size--;
     }*/
+
+
+//    node *temp;
+//    temp = head;
+//    while (head != nullptr) {
+//        temp = head->next;
+//        delete head;
+//        head = temp;
+//        size--;
+//    }
+
 }
 
 // return the value inside of the node located at position
@@ -173,7 +185,7 @@ doubly_linked_list doubly_linked_list::operator+(const doubly_linked_list &rhs) 
     doubly_linked_list obj(*this);
     doubly_linked_list obj1(rhs);
 
-    obj.merge(rhs);
+    obj.merge(obj1);
 
     return obj;
 //    return ;
@@ -295,10 +307,11 @@ doubly_linked_list doubly_linked_list::split_set(unsigned position_from, unsigne
     //case 3: to exists before from
     //case 4: to and from are at the same position
 
-    node* temp = head;
+    node* temp=head;
     node *temp1=head;
     node *temp2=head;
     doubly_linked_list obj;
+
 
     if( position_to - position_from + 1 == size || position_from == position_to){
         std::cout << "Cannot split list within this range." << std::endl;
@@ -307,7 +320,7 @@ doubly_linked_list doubly_linked_list::split_set(unsigned position_from, unsigne
     if(position_from < position_to) {
         //split before position
         for (int i = 0; i < position_from; i++) {
-            temp1 = temp;
+            temp1 = temp; //refers to the node right before position from
             temp = temp->next;
         }
 
@@ -322,22 +335,29 @@ doubly_linked_list doubly_linked_list::split_set(unsigned position_from, unsigne
             temp = temp->next;
         }
 
-        temp2 = temp->next;
-        obj.append(temp->data);
+        temp2 = temp->next; //temp2 refers to the node after position_to
+        //obj.append(temp->data);
         temp->next->prev = nullptr; //temp2->prev=nullptr
         temp->next = nullptr;
 
         //merging the ends of the list
+        obj.tail = temp2;
+
         temp1->next = temp2;
         temp2->prev = temp1;
 
         obj.size = (position_to - position_from)+1;
         size = size - obj.size;
+
+        return obj;
     }
     else{//'from' to tail and then head to 'to' and then
         for (int i = 0; i < position_from; i++) {
             temp1 = temp1->next;
         }
+
+        doubly_linked_list obj(temp->data);
+        temp = temp->next;
 
         while (temp1 != nullptr){
             obj.append(temp1->data);
@@ -351,9 +371,11 @@ doubly_linked_list doubly_linked_list::split_set(unsigned position_from, unsigne
 
         obj.size = position_to + (size - position_from) + 2;
         size = size-obj.size;
+
+        return obj;
     }
 
-    return obj;
+    //return obj;
 //    return ;
 }
 
@@ -432,7 +454,7 @@ void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to
 }
 
 // Overload operator=
-doubly_linked_list &doubly_linked_list::operator=(const doubly_linked_list &RHS) {
+doubly_linked_list doubly_linked_list::operator=(const doubly_linked_list &RHS) {
 //copies the contents of one linked list to another - can only up to length of either linked list
 //if there are any excess nodes or are needed of other nodes, then they are either deleted or added
 
@@ -467,19 +489,32 @@ doubly_linked_list &doubly_linked_list::operator=(const doubly_linked_list &RHS)
         }
     }
 
+    return *this;
 //    return <#initializer#>;
 }
 
 // Append the rhs to the end of the this list
-doubly_linked_list &doubly_linked_list::operator+=(const doubly_linked_list &RHS) {
-    doubly_linked_list obj(*this);
+doubly_linked_list doubly_linked_list::operator+=(const doubly_linked_list &RHS) {
+    //doubly_linked_list obj(*this);
+    //doubly_linked_list obj2(RHS);
 
     node*temp = RHS.head;
+    //node *temp0=head;
+    //temp0 = temp0->next;
+
+    //doubly_linked_list obj(*this);
+
+    //node *temp = obj2.head;
 
     while(temp->next != nullptr){
-        obj.append(temp->data);
+        append(temp->data);
         temp = temp->next;
     }
+    append(temp->data);
+
+
+    return *this;
+  //return obj; //
 //    return <#initializer#>;
 }
 
