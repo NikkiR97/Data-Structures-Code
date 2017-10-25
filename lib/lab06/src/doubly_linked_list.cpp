@@ -334,6 +334,7 @@ doubly_linked_list doubly_linked_list::split_set(unsigned position_from, unsigne
             obj.append(temp->data);
             temp = temp->next;
         }
+        obj.append(temp->data);
 
         temp2 = temp->next; //temp2 refers to the node after position_to
         //obj.append(temp->data);
@@ -420,7 +421,7 @@ void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to
     count2 = 0;
 
     while(temp -> next != nullptr && count1++ != position1_to){
-        if(count1 < position1_from){
+        if(count1 < position1_from+1){
             myprev = temp;
             start1 = temp -> next;
         }
@@ -429,6 +430,7 @@ void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to
     end1 = temp;
     mynext = end1 -> next;
 
+    /*
     // traversing through the list backwards
     temp = tail;
 
@@ -440,7 +442,18 @@ void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to
         temp = temp->prev;
     }
     start2 = temp;
-    myprev2 = start2 -> prev;
+    myprev2 = start2 -> prev;*/
+    temp = head;
+
+    while(temp -> next != nullptr && count2++ != position2_to){
+        if(count2 < position2_from+1){
+            myprev2 = temp;
+            start2 = temp -> next;
+        }
+        temp = temp->next;
+    }
+    end2 = temp;
+    mynext2 = end2 -> next;
 
     end1 -> next = mynext2;
     start1 -> prev = myprev2;
@@ -476,6 +489,7 @@ doubly_linked_list doubly_linked_list::operator=(const doubly_linked_list &RHS) 
         temp = temp->next;
         temp1 = temp1->next;
     }
+//    temp->data = temp1->data;
 
     if(choice == 'a'){
         for(int j=minsize; j<maxsize; j++){
@@ -485,9 +499,11 @@ doubly_linked_list doubly_linked_list::operator=(const doubly_linked_list &RHS) 
     else if(choice == 'b'){
         for(int j=minsize; j<maxsize; j++){
             append(temp1->data);
-            temp1->next;
+            temp1 = temp1->next;
         }
     }
+
+    size = RHS.size;
 
     return *this;
 //    return <#initializer#>;
