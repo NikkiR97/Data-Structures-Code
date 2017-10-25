@@ -5,9 +5,9 @@ int main() {
 
     std::vector <unsigned> val(10);
     val = {1,2,3,4,5,6,7,8,9,10};
-   // doubly_linked_list a(val);
-   // a.swap_set(2,4,6,8);
-   // a.print();
+//   doubly_linked_list a(val);
+//   a.swap_set(2,4,6,8);
+//   a.print();
 
     std::cout <<"The current list:" <<std::endl;
     doubly_linked_list obj(val);
@@ -43,8 +43,8 @@ int main() {
     obj.swap(4,7);
     obj.print();
 
-    std::cout <<"Sets 8-10 and 15-17 are swapped for obj1:" <<std::endl;
-    obj.swap_set(8,10,15,17);
+    std::cout <<"Sets 2-5 and 8-10 are swapped for obj1:" <<std::endl;
+    obj.swap_set(2,5,8,10);
     obj.print();
 
     std::cout <<"Splitting obj1 before position 10, new object(3):" << std::endl;
