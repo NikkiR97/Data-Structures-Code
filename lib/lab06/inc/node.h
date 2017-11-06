@@ -10,5 +10,4 @@ public:
     explicit node(unsigned int data) : data(data), next(nullptr), prev(nullptr) {}
 };
 
-
 #endif //UNTITLED1_NODE_H

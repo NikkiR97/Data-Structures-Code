@@ -118,5 +118,13 @@ int main() {
 
     object.print();
 
+    object.remove(5);
+    std::cout<<std::endl;
+    object.print();
+
+    object.remove(10);
+    std::cout<<std::endl;
+    object.print();
+
     return 0;
 }

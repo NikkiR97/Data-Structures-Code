@@ -9,7 +9,6 @@ const int BUFFER_SIZE = 500;
 deck::deck()=default;
 
 deck::deck(std::string rules, std::string deck_list) {
-
 }
 
 std::vector<std::string> deck::load(std::string file) {

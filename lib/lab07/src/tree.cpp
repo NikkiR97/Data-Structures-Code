@@ -62,6 +62,10 @@ bool tree::remove(int key){
         std::cout << "No nodes exist to remove." << std::endl;
         return false;
     }
+    if(in_tree(key) == false){
+        std::cout << "No key in the tree. No nodes to remove" << std::endl;
+        return false; //need to exit the function if the key does not exist on the tree
+    }
     else {
         while (temp -> left != nullptr && temp -> right != nullptr && temp -> data != key) {
             if (key < temp->data) {
@@ -72,49 +76,51 @@ bool tree::remove(int key){
                 temp = temp->right; dir=0;
             }
         }
-        if(temp->data != key){
-            std::cout << "No nodes exist with that key." << std::endl;
-            return false;
-        }
         //after finding key, need to traverse through until you reach the end of that subtree in order to make the correct replacements
         //when ever you plan to remove a node, make the replace and again traverse to the end
         //when removing the node, replace with the left side (if exists, else with right side) or left side of the child
 
         node *to_remove = temp;
-        int to_dir;
+        //int to_dir;
 
-        if(temp->left != nullptr){
-            to_remove = temp->left;
+        while (temp!=nullptr) {
+            if (temp->left != nullptr) {
+                prev =to_remove; dir = 1;
+                to_remove = temp->left;
 
-             if (to_remove->left != nullptr){
-                 to_remove = to_remove->left; to_dir=1;
-             }
-             else if(temp->right != nullptr){
-                 to_remove = to_remove->right; to_dir=0;
-             }
-            //at this point, make the replacement of temp's content with to_remove's and then call the function again if to_remove has any children
-            temp->data = to_remove->data;
-            remove(to_remove->data);
-        }
-        else if(temp->right != nullptr){
-            to_remove = temp->right;
+                if (to_remove->left != nullptr) {
+                    prev = to_remove;
+                    to_remove = to_remove->left; dir = 1;
+                } else if (to_remove->right != nullptr) {
+                    prev = to_remove;
+                    to_remove = to_remove->right; dir = 0;
+                }
+                //at this point, make the replacement of temp's content with to_remove's and then call the function again if to_remove has any children
+                temp->data = to_remove->data;
+                temp = to_remove; //temp now points to where to_remove is
+                //remove(to_remove->data); //cannot do that, will go infinitely because it will never reach to_remove's node but temp's node
+            } else if (temp->right != nullptr) {
+                prev = to_remove; dir =0;
+                to_remove = temp->right;
 
-            if (to_remove->left != nullptr){
-                to_remove = to_remove->left;
+                if (to_remove->left != nullptr) {
+                    prev = to_remove; dir =1;
+                    to_remove = to_remove->left;
+                } else if (to_remove->right != nullptr) {
+                    prev = to_remove; dir =0;
+                    to_remove = to_remove->right;
+                }
+                temp->data = to_remove->data;
+                temp = to_remove; //temp now points to where to_remove is
+                //remove(to_remove->data);
+            } else {
+                if (dir == 1) {
+                    prev->left = nullptr;
+                } else if (dir == 0) {
+                    prev->right = nullptr;
+                }
+                return true;
             }
-            else if(temp->right != nullptr){
-                to_remove = to_remove->right;
-            }
-            remove(to_remove->data);
-        }
-        else{
-             if(dir==1){
-             prev -> left = nullptr;
-             }
-             else if(dir==0){
-             prev -> right = nullptr;
-             }
-            return true;
         }
     }
 }
@@ -127,7 +133,11 @@ int tree::level(int key){
     int level_count=0; //the first level (root) is at level 0
 
     if(!root){
-        std::cout << "No nodes exist to find the key on." << std::endl;
+        std::cout << "No nodes exist in the tree." << std::endl;
+    }
+    if(in_tree(key) == false){
+        std::cout << "No key in the tree. Cannot identify the level." << std::endl;
+        return false; //need to exit the function if the key does not exist on the tree
     }
     else {
         while (temp->left != nullptr && temp->right != nullptr && temp->data!=key) {
@@ -147,7 +157,10 @@ void tree::path_to(int key){
     node *temp = root;
 
     if(!root){
-        std::cout << "No nodes exist to find the key on." << std::endl;
+        std::cout << "No nodes exist on the tree" << std::endl;
+    }
+    if(in_tree(key) == false){
+        std::cout << "No key in the tree, no path to print out. " << std::endl;//need to exit the function if the key does not exist on the tree
     }
     else {
         while (temp->left != nullptr && temp->right != nullptr) {
@@ -165,20 +178,80 @@ void tree::path_to(int key){
 // Number of items in the tree
 unsigned tree::size(){
     //traverse through the similar way you would when printing but don't print, just keep count;
+    node *current,*prev;
+    int size = 0;
 
+    if(root == nullptr) {
+        return 0;
+    }
+    current = root;
+    while(current != nullptr)
+    {
+        if(current->left == nullptr)
+        {
+            size++;
+            current = current->right;
+        }
+        else
+        {
+            prev = current->left;
+            while(prev->right != nullptr && prev->right != current) {
+                prev = prev->right;
+            }
+            if(prev->right == nullptr)
+            {
+                prev->right = current;
+                current = current->left;
+            }
+            else
+            {
+                prev->right = nullptr;
+                size++;
+                current = current->right;
+            }
+        }
+    }
 
+    return size;
 }
 
 // Calculate the depth of the tree, longest string of connections
 unsigned tree::depth(){
+    //there can be more than one longest path
+    //means to find the diameter of the tree
+    //try the depth first search
+
 
 }
 
 // Determine whether the given key is in the tree
-bool tree::in_tree(int key){
+bool tree::in_tree(int key){ //need to fix
     //find the key in the tree and if it exists then return true, else return false
+    node *temp = root;
+    int dir;
 
-
+    if(!root){
+        std::cout << "No nodes exist to find key on." << std::endl;
+        return false;
+    }
+    else {
+        while (temp->left != nullptr && temp->right != nullptr && temp->data != key) {
+            if (key < temp->data) {
+                temp = temp->left;
+                dir = 1;
+            } else if (key > temp->data) {
+                temp = temp->right;
+                dir = 0;
+            }
+        }
+        if (temp->data != key) {
+            std::cout << "No nodes exist with that key." << std::endl;
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
 }
 
 // Return the number of times that value is in the tree
