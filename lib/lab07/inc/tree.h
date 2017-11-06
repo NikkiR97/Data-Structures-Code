@@ -17,6 +17,7 @@ public:
     unsigned depth();
     void print();
     void print_gtl();
+    void node_print_gtl(node* to_print);
 };
 
 #endif //CMPE126F17_LABS_TREE_H

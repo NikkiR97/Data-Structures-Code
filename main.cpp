@@ -1,4 +1,9 @@
-#include "lib/lab06/inc/deck.h"
+//#include "lib/lab06/inc/deck.h"
+#include "lib/lab07/inc/tree.h"
+#include "lib/lab07/src/tree.cpp"
+#include <iostream>
+#include <vector>
+
 
 int main() {
     //deck newdeck;
@@ -9,6 +14,26 @@ int main() {
 //   a.swap_set(2,4,6,8);
 //   a.print();
 
+    std::vector <unsigned> val2(5);
+    val2 = {1,2,3,4,5,};
+
+    std::vector <unsigned> val3(5);
+    val3 = {1,2,3};
+
+
+//    std::cout <<"The current list1:" <<std::endl;
+//    doubly_linked_list list1(val2);
+//    list1.print();
+//
+//    std::cout <<"The current list2:" <<std::endl;
+//    doubly_linked_list list2(val3);
+//    list2.print();
+//
+//    std::cout <<"List2 = List1" <<std::endl;
+//    list2=list1;
+//    list2.print();
+
+    /*
     std::cout <<"The current list:" <<std::endl;
     doubly_linked_list obj(val);
     obj.print();
@@ -76,6 +101,22 @@ int main() {
     std::cout <<"Obj4 is appended unto Obj7." <<std::endl;
     obj7 += obj4; //has an issue
     obj7.print();
+
+    std::cout<<"Overwriting the obj1 with obj7, New obj 1:" << std::endl;
+    obj = obj7;
+    obj.print(); */
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~lab 7~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    tree object;
+
+    std::cout << "In this program, a tree will be created from a list of numbers: 8, 10, 5, 3, 14. " << std::endl;
+    object.insert(8);
+    object.insert(10);
+    object.insert(5);
+    object.insert(3);
+    object.insert(14);
+
+    object.print();
 
     return 0;
 }
