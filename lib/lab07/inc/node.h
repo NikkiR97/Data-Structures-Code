@@ -1,8 +1,8 @@
-#ifndef UNTITLED1_NODE_H
-#define UNTITLED1_NODE_H
+#ifndef UNTITLED1_NODE_HH
+#define UNTITLED1_NODE_HH
 
 // Yes, this is a very tiny node. Everything is accessibly publicly, without accessors or mutators
-
+namespace lab7{
 class node {
 public:
     node *left, *right;
@@ -10,6 +10,6 @@ public:
     unsigned frequency;
     explicit node(int data) : data(data), frequency(1), left(nullptr), right(nullptr) {}
 };
+}
 
-
-#endif //UNTITLED1_NODE_H
+#endif //UNTITLED1_NODE_HH
