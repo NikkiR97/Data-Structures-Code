@@ -106,7 +106,9 @@ int main() {
     obj = obj7;
     obj.print();
 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~lab 7~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    std::cout << std::endl;
+
+    std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~lab 7~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "<< std::endl;
    lab7::tree object;
 
     std::cout << "In this program, a tree will be created from a list of numbers: 8, 10, 5, 3, 14. " << std::endl;
@@ -124,9 +126,9 @@ int main() {
     std::cout<<std::endl;
     object.print();
 
-//    object.remove(10);
-//    std::cout<<std::endl;
-//    object.print();
+  //   object.remove(10);
+  //   std::cout<<std::endl;
+  //   object.print();
 
    //if(object.in_tree(14)){
    //    std::cout << "14 exists in the tree. " << std::endl;

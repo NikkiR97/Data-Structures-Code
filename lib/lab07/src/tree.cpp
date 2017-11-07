@@ -345,7 +345,7 @@ namespace lab7 {
 
         node *temp = root;
 
-        node_print_gtl(temp);
+        node_print(temp);
 
     }
 
@@ -354,21 +354,25 @@ namespace lab7 {
     }
 
     void tree::node_print_gtl(node *to_print) {
+        //WILL BE PROVIDED FOR YOU
+    }
+
+    void tree::node_print(node *to_print) {
         //node *temp = root;
         int dataFreq = 0;
 
         if (to_print == NULL)
             return;
 
-        node_print_gtl(to_print->left);
+        node_print(to_print->left);
         dataFreq = to_print->frequency;
         while(dataFreq>0) {
             std::cout << to_print->data << std::endl; // visit the node
             dataFreq--;
         }
         //print_gtl();
-        node_print_gtl(to_print->right);
-        //WILL BE PROVIDED FOR YOU
+        node_print(to_print->right);
+
     }
 
     void clear(node *to_clear) {

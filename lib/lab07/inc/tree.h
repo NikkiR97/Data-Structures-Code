@@ -43,6 +43,8 @@ namespace lab7 {
 
         void path2key(node *pointer, int key);
 
+        void node_print(node *to_print);
+
     };
 }
 
