@@ -126,9 +126,9 @@ int main() {
     std::cout<<std::endl;
     object.print();
 
-  //   object.remove(10);
-  //   std::cout<<std::endl;
-  //   object.print();
+    object.remove(10);
+     std::cout<<std::endl;
+     object.print();
 
    //if(object.in_tree(14)){
    //    std::cout << "14 exists in the tree. " << std::endl;
