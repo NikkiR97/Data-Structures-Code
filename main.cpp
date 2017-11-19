@@ -20,7 +20,6 @@ int main() {
     std::vector <unsigned> val3(5);
     val3 = {1,2,3};
 
-
 //    std::cout <<"The current list1:" <<std::endl;
 //    doubly_linked_list list1(val2);
 //    list1.print();
@@ -33,10 +32,16 @@ int main() {
 //    list2=list1;
 //    list2.print();
 
-
     std::cout <<"The current list:" <<std::endl;
     lab6::doubly_linked_list obj(val);
     obj.print();
+
+    std::vector <unsigned> newset = obj.get_set(4,7);
+    std::cout << "This is the returned set between position 4 and 7." << std::endl;
+    for(int i=0; i<4; i++){
+        std::cout << newset[i] << " ";
+    }
+    std::cout << std::endl;
 
     std::cout <<"Inserted zero before position 1:" <<std::endl;
     obj.insert_before(1,0);

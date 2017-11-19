@@ -138,6 +138,9 @@ namespace lab6 {
         node *temp = head;
 
         std::vector<unsigned> set;
+        for (int i = 0; i < position_from; i++) {
+            temp = temp->next;
+        }
 
         for (int i = position_from; i <= position_to; i++) {
             set.push_back(temp->data);
