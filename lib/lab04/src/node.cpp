@@ -99,7 +99,7 @@ namespace lab4 {
         int temploc = 0;
         temp = this;
 
-        int checker = 0;
+        /*int checker = 0;
 
         if (this != nullptr) {
 
@@ -137,6 +137,33 @@ namespace lab4 {
 
         if (checker == 0) {
             std::cout << "There are no nodes to remove." << std::endl;
+        }*/
+
+        if(temp == nullptr){
+            std::cout << "There are no nodes to remove. " << std::endl;
+        }
+        while(temp!=nullptr && temploc++!=location){
+            prev=temp;
+            temp = temp->next;
+        }
+        if(temp==this){
+            if(temp->next) {
+                temp->data = temp->next->data;
+                prev = temp;
+                temp = temp->next;
+                prev->next = temp->next;
+                delete temp;
+            }
+            else{
+                delete temp;
+            }
+        }
+        else if(temp->next == nullptr){
+            prev->next = nullptr;
+        }
+        else{
+            prev->next = temp->next;
+            delete temp;
         }
 
         return this;
