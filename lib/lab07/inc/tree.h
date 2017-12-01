@@ -31,7 +31,9 @@ namespace lab7 {
 
         void node_print_gtl(node *to_print);
 
-        node* insertHelp(node *pointer, int val);
+        //node* insertHelp(node *pointer, int val);
+
+        node* insertHelp2(node *prev, node *pointer, int val);
 
         unsigned retSize(node *pointer, unsigned size);
 

@@ -15,10 +15,10 @@ namespace lab5 {
 
         void convert_to_postfix(std::string &input_expression);
         void parse_to_infix(std::string &input_expression);
-
     public:
         expression();
-        expression(std::string &input_expression);
+        expression(std::string& input_expression);
+
         int calculate_postfix();
         void print_infix();
         void print_postfix();
@@ -35,6 +35,9 @@ namespace lab5 {
         std::string operCalc(std::string Op1, std::string Op2, std::string Op);
 
         bool findHigher(std::string currentOp, std::string topOperator);
+
+        friend std::istream& operator>>(std::istream& steam, expression& RHS);
+
     };
 }
 

@@ -194,3 +194,5 @@ TEST_F(Lab05_Fixture, calculate_test) {
 
     EXPECT_EQ(0,test_expression->calculate_postfix());
 }
+
+

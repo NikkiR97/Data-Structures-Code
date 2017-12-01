@@ -151,6 +151,7 @@ TEST_F(Lab04_Fixture, remove_test) {
 //    test_list->print();
 //    output = testing::internal::GetCapturedStdout();
 //    EXPECT_EQ("1 -> 3 -> 4 -> null", output)<< "beginning  of list removal";
+
 }
 
 
@@ -169,3 +170,4 @@ TEST_F(Lab04_Fixture, getter_setter_test) {
         EXPECT_EQ(2*i,test_list->get_value(i));
     }
 }
+

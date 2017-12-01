@@ -255,14 +255,14 @@ namespace lab6 {
             temp->prev->next = nullptr;
             delete temp;
         }
-        /*else if(temp->next == nullptr){
-            temp->prev->next = nullptr;
-            delete temp;
-        }
-        else if(temp->prev == nullptr){
-            temp->next->prev = nullptr;
-            delete temp;
-        }*/
+            /*else if(temp->next == nullptr){
+                temp->prev->next = nullptr;
+                delete temp;
+            }
+            else if(temp->prev == nullptr){
+                temp->next->prev = nullptr;
+                delete temp;
+            }*/
 
         else if(temp->next != nullptr && temp->prev != nullptr){ //if there is a node in the front and the back of perspective removed node
             temp->prev->next = temp->next;
@@ -592,7 +592,7 @@ namespace lab6 {
     }*/
 
 
-   void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to, unsigned position2_from,
+    void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to, unsigned position2_from,
                                       unsigned position2_to) {
         node *temp = head;
         node *mynext=head;
@@ -604,34 +604,34 @@ namespace lab6 {
         node *start2=head;
         node *end2=head;
 
-     for(int i=0; i<position1_to; i++){
-         if(temp->next!=nullptr){
-             if(i<=position1_from) {
-                 myprev = start1;
-                 start1 = temp;
-             }
-             temp = temp->next;
-         }
-     }
-     end1 = temp;
-     mynext = end1->next;
+        for(int i=0; i<position1_to; i++){
+            if(temp->next!=nullptr){
+                if(i<=position1_from) {
+                    myprev = start1;
+                    start1 = temp;
+                }
+                temp = temp->next;
+            }
+        }
+        end1 = temp;
+        mynext = end1->next;
 
-     temp = head;
+        temp = head;
 
-     for(int i=0; i<position2_to; i++){
-         if(temp->next!=nullptr){
-             if(i<=position2_from) {
-                 myprev2 = start2;
-                 start2 = temp;
-             }
-             temp = temp->next;
-         }
-     }
+        for(int i=0; i<position2_to; i++){
+            if(temp->next!=nullptr){
+                if(i<=position2_from) {
+                    myprev2 = start2;
+                    start2 = temp;
+                }
+                temp = temp->next;
+            }
+        }
 
-     end2 = temp;
-     mynext2 = end2->next;
+        end2 = temp;
+        mynext2 = end2->next;
 
-   if(position1_from == 0 && position2_to == size-1){ //both sets are exactly at the beg and the end
+        if(position1_from == 0 && position2_to == size-1){ //both sets are exactly at the beg and the end
             start2->prev = nullptr;
             mynext->prev = end2;
             end2->next = mynext;
@@ -777,6 +777,21 @@ namespace lab6 {
         std::cout << std::endl;
         if (is_empty()) {
             std::cout << "There are no nodes to print the contents of." << std::endl;
+        }
+    }
+
+    std::string doubly_linked_list::to_string() {
+        if(!head) return "";
+        else {
+            std::string output = "";
+            output += std::to_string(head->data);
+            node *to_return = head->next;
+            while (to_return) {
+                output += ", ";
+                output += std::to_string(to_return->data);
+                to_return = to_return->next;
+            }
+            return output;
         }
     }
 }

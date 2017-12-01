@@ -51,7 +51,9 @@ namespace lab7 {
 
         node *pointer = root;
 
-        insertHelp(root,value);
+        //insertHelp(root,value);
+
+        insertHelp2(pointer, pointer, value);
 
         return;
     }
@@ -74,7 +76,7 @@ namespace lab7 {
             std::cout << "No key in the tree. No nodes to remove" << std::endl;
             return false; //need to exit the function if the key does not exist on the tree
         } else {
-            while (temp->left != nullptr && temp->right != nullptr && temp->data != key) {
+            while (temp!= nullptr && temp!= nullptr && temp->data != key) {
                 if (key < temp->data) {
                     prev = temp;
                     temp = temp->left;
@@ -91,50 +93,56 @@ namespace lab7 {
 
             node *to_remove = temp;
             //int to_dir;
-
-            while (temp != nullptr) {
-                if (temp->left != nullptr) {
-                    prev = to_remove;
-                    dir = 1;
-                    to_remove = temp->left;
-
-                    if (to_remove->left != nullptr) {
-                        prev = to_remove;
-                        to_remove = to_remove->left;
-                        dir = 1;
-                    } else if (to_remove->right != nullptr) {
-                        prev = to_remove;
-                        to_remove = to_remove->right;
-                        dir = 0;
-                    }
-                    //at this point, make the replacement of temp's content with to_remove's and then call the function again if to_remove has any children
-                    temp->data = to_remove->data;
-                    temp = to_remove; //temp now points to where to_remove is
-                    //remove(to_remove->data); //cannot do that, will go infinitely because it will never reach to_remove's node but temp's node
-                } else if (temp->right != nullptr) {
-                    prev = to_remove;
-                    dir = 0;
-                    to_remove = temp->right;
-
-                    if (to_remove->left != nullptr) {
+            if(temp->frequency > 1){
+                temp->frequency--;
+                return true;
+            }
+            else {
+                while (temp != nullptr) {
+                    if (temp->left != nullptr) {
                         prev = to_remove;
                         dir = 1;
-                        to_remove = to_remove->left;
-                    } else if (to_remove->right != nullptr) {
+                        to_remove = temp->left;
+
+                        if (to_remove->left != nullptr) {
+                            prev = to_remove;
+                            to_remove = to_remove->left;
+                            dir = 1;
+                        } else if (to_remove->right != nullptr) {
+                            prev = to_remove;
+                            to_remove = to_remove->right;
+                            dir = 0;
+                        }
+                        //at this point, make the replacement of temp's content with to_remove's and then call the function again if to_remove has any children
+                        temp->data = to_remove->data;
+                        temp = to_remove; //temp now points to where to_remove is
+                        //remove(to_remove->data); //cannot do that, will go infinitely because it will never reach to_remove's node but temp's node
+                    } else if (temp->right != nullptr) {
                         prev = to_remove;
                         dir = 0;
-                        to_remove = to_remove->right;
+                        to_remove = temp->right;
+
+                        if (to_remove->left != nullptr) {
+                            prev = to_remove;
+                            dir = 1;
+                            to_remove = to_remove->left;
+                        } else if (to_remove->right != nullptr) {
+                            prev = to_remove;
+                            dir = 0;
+                            to_remove = to_remove->right;
+                        }
+                        temp->data = to_remove->data;
+                        temp->frequency = to_remove->frequency; //new part added~~~~~~~~~~~~~~~~~~
+                        temp = to_remove; //temp now points to where to_remove is
+                        //remove(to_remove->data);
+                    } else {
+                        if (dir == 1) {
+                            prev->left = nullptr;
+                        } else if (dir == 0) {
+                            prev->right = nullptr;
+                        }
+                        return true;
                     }
-                    temp->data = to_remove->data;
-                    temp = to_remove; //temp now points to where to_remove is
-                    //remove(to_remove->data);
-                } else {
-                    if (dir == 1) {
-                        prev->left = nullptr;
-                    } else if (dir == 0) {
-                        prev->right = nullptr;
-                    }
-                    return true;
                 }
             }
         }
@@ -181,7 +189,7 @@ namespace lab7 {
 // Print the path to the key, starting with root
     void tree::path_to(int key) {
 
-        node *temp = root;
+        /*node *temp = root;
 
         if(!root){
             std::cout << "No nodes exist on the tree" << std::endl;
@@ -200,12 +208,12 @@ namespace lab7 {
                 }
             }
             std::cout << temp->data << std::endl;
-        }
+        }*/
 
 
         //Below is the recursive version but it doesn't seem to work to well
-        //node *pointer = root;
-        //path2key(pointer, key);
+        node *pointer = root;
+        path2key(pointer, key);
 
     }
 
@@ -267,6 +275,10 @@ namespace lab7 {
         node *pointer = root;
 
         depth = findDepth(pointer, depth);
+
+        if(depth != 0){
+            depth -= 1;
+        }
 
         return depth;
     }
@@ -358,41 +370,49 @@ namespace lab7 {
     }
 
     void tree::print_gtl() {
-        //WILL BE PROVIDED FOR YOU
+        node_print_gtl(root);
+        std::cout << std::endl;
     }
 
     void tree::node_print_gtl(node *to_print) {
         //WILL BE PROVIDED FOR YOU
     }
 
-    void tree::node_print(node *to_print) {
-        //node *temp = root;
-        int dataFreq = 0;
+    void node_print_gtl(node *top) {
+        if (top == nullptr) return;
+        node_print_gtl(top->right);
+        for (int i = 0; i < top->frequency; i++) std::cout << top->data << " ";
+        node_print_gtl(top->left);
+    }
 
-        if (to_print == nullptr)
-            return;
+        void tree::node_print(node *to_print) {
+            //node *temp = root;
+            int dataFreq = 0;
 
-        node_print(to_print->left);
-        dataFreq = to_print->frequency;
-        while(dataFreq>0) {
-            std::cout << to_print->data << " "; // visit the node
-            dataFreq--;
+            if (to_print == nullptr)
+                return;
+
+            node_print(to_print->left);
+            dataFreq = to_print->frequency;
+            while (dataFreq > 0) {
+                std::cout << to_print->data << " "; // visit the node
+                dataFreq--;
+            }
+            //print_gtl();
+            node_print(to_print->right);
+
         }
-        //print_gtl();
-        node_print(to_print->right);
 
-    }
+        void clear(node *to_clear) {
+            if (to_clear == nullptr) return;
+            if (to_clear->left != nullptr) clear(to_clear->left);
+            if (to_clear->right != nullptr) clear(to_clear->right);
+            delete to_clear;
+        }
 
-    void clear(node *to_clear) {
-        if (to_clear == nullptr) return;
-        if (to_clear->left != nullptr) clear(to_clear->left);
-        if (to_clear->right != nullptr) clear(to_clear->right);
-        delete to_clear;
-    }
-
-    unsigned tree::retSize(node *pointer, unsigned size) {
-        //int size=0;
-        //node *findNode = root;
+        unsigned tree::retSize(node *pointer, unsigned size) {
+            //int size=0;
+            //node *findNode = root;
 
 
 //    if(pointer == NULL)
@@ -408,153 +428,188 @@ namespace lab7 {
 //
 //        return retSize(pointer->left, size+pointer->frequency) + retSize(pointer->right, size+pointer->frequency)+1;
 
-        if (pointer == nullptr)
-            return size;
-        else {
-                size += pointer->frequency+1;
-                retSize(pointer->left, size);
-                retSize(pointer->right, size);
+            if (pointer == nullptr)
+                return size;
+            else {
+                //size += pointer->frequency;
+                return (retSize(pointer->left, size)+retSize(pointer->right, size) + pointer->frequency) ;
+            }
         }
-    }
 
-    int tree::getFreq(node *pointer, int key) {
+        int tree::getFreq(node *pointer, int key) {
 
-        //if(pointer== nullptr)
-        //   return pointer->frequency;
-        /*if(pointer->data == key)
-           return pointer->frequency;
+            //if(pointer== nullptr)
+            //   return pointer->frequency;
+            /*if(pointer->data == key)
+               return pointer->frequency;
 
-       if(pointer -> left) {
-           getFreq(pointer->left, key);
-       }
-       if(pointer -> right) {
-           getFreq(pointer->right, key);
-       }*/
-        int next;
+           if(pointer -> left) {
+               getFreq(pointer->left, key);
+           }
+           if(pointer -> right) {
+               getFreq(pointer->right, key);
+           }*/
+            int next;
 
-        if (pointer == nullptr)
-            return 0;
-        if (pointer->data == key)
-            return pointer->frequency;
+            if (pointer == nullptr)
+                return 0;
+            if (pointer->data == key)
+                return pointer->frequency;
 
-        next = getFreq(pointer->left, key);
-        if (next != 0)
-            return next;
-        next = getFreq(pointer->right, key);
+            next = getFreq(pointer->left, key);
+            if (next != 0)
+                return next;
+            next = getFreq(pointer->right, key);
 
-        //return next;
-    }
-
-    int tree::getLevel(node *pointer, int key, int level) {
-        /*if(pointer== nullptr)
-            return 0; //fail
-        if(pointer->data == key)
-            return level;
-
-        level++;
-        if(pointer -> left) {
-            getLevel(pointer->left, key, level);
+            //return next;
         }
-        if(pointer -> right) {
-            getLevel(pointer->right, key, level);
+
+        int tree::getLevel(node *pointer, int key, int level) {
+            /*if(pointer== nullptr)
+                return 0; //fail
+            if(pointer->data == key)
+                return level;
+
+            level++;
+            if(pointer -> left) {
+                getLevel(pointer->left, key, level);
+            }
+            if(pointer -> right) {
+                getLevel(pointer->right, key, level);
+            }*/
+            /*int nextlevel;
+
+            if (pointer == nullptr) //did not find key
+                return 0;
+            if (pointer->data == key)
+                return level;
+
+            nextlevel = getLevel(pointer->left, key, level + 1);
+            if (nextlevel != 0)
+                return nextlevel;
+
+            nextlevel = getLevel(pointer->right, key, level + 1);
+            return nextlevel;*/
+
+            int total;
+
+            if(pointer) {
+                if (pointer->data == key)
+                    return level;
+            }
+            else {
+                if (pointer == nullptr)
+                    return -1;
+            }
+
+            if(pointer->data>key){
+                total = getLevel(pointer->left,key, level+1);
+                return total;
+            }
+            else if(pointer->data<key){
+                total = getLevel(pointer->right, key, level+1);
+                return total;
+            }
+
+        }
+
+        bool tree::findKey(node *pointer, int key) {
+            int next;
+
+            if (pointer == nullptr)
+                return false;
+            if (pointer->data == key)
+                return true;
+
+            next = getFreq(pointer->left, key);
+            if (next != 0)
+                return next;
+            next = getFreq(pointer->right, key);
+        }
+
+        unsigned tree::findDepth(node *pointer, unsigned size) {
+            //need to find the depth of the left subtree and then the depth of the right subtree
+            unsigned depthleft = 1;
+            unsigned depthright = 1;
+
+            if (pointer == nullptr)
+                return 0;
+            depthleft = findDepth(pointer->left, size);
+            depthright = findDepth(pointer->right, size);
+
+            if (depthleft >= depthright) {
+                return depthleft + 1;
+            } else {
+                return depthright + 1;
+            }
+        }
+
+        void tree::path2key(node *pointer, int key) {
+            node *temp = root;
+
+            if(findKey(root, key)){
+            if (pointer->data == key) {
+                std::cout << pointer->data << std::endl;
+                return;
+            }
+
+            if (pointer->data > key) {
+                std::cout << pointer->data << " -> "; // visit the node
+                path2key(pointer->left, key);
+            }
+            if (pointer->data < key) {
+                std::cout << pointer->data << " -> "; // visit the node
+                path2key(pointer->right, key);
+            }
+            }
+            else{
+                return;
+            }
+        }
+
+       /* node *tree::insertHelp(node *pointer, int val) {
+
+            if (root == nullptr) {
+                root = new node(val);
+            } else if (val == pointer->data) {
+                pointer->frequency++;
+            } else if (val < pointer->data) {
+                if (pointer->left != nullptr)
+                    insertHelp(pointer->left, val);
+                else {
+                    pointer->left = new node(val);
+                }
+            } else if (val > pointer->data) {
+                if (pointer->right != nullptr)
+                    insertHelp(pointer->right, val);
+                else {
+                    pointer->right = new node(val);
+                }
+            }
         }*/
-        int nextlevel;
 
-        if (pointer == nullptr)
-            return 0;
-        if (pointer->data == key)
-            return level;
+        node *tree::insertHelp2(node *prev, node *pointer, int val){
 
-        nextlevel = getLevel(pointer->left, key, level + 1);
-        if (nextlevel != 0)
-            return nextlevel;
-
-        nextlevel = getLevel(pointer->right, key, level + 1);
-        return nextlevel;
-    }
-
-    bool tree::findKey(node *pointer, int key) {
-        int next;
-
-        if (pointer == nullptr)
-            return false;
-        if (pointer->data == key)
-            return true;
-
-        next = getFreq(pointer->left, key);
-        if (next != 0)
-            return next;
-        next = getFreq(pointer->right, key);
-    }
-
-    unsigned tree::findDepth(node *pointer, unsigned size) {
-        //need to find the depth of the left subtree and then the depth of the right subtree
-        unsigned depthleft = 0;
-        unsigned depthright = 0;
-
-        if (pointer == nullptr)
-            return 0;
-        depthleft = findDepth(pointer->left, size);
-        depthright = findDepth(pointer->right, size);
-
-        if (depthleft >= depthright) {
-            return depthleft + 1;
-        } else {
-            return depthright + 1;
+        if(root == nullptr){
+            root = new node(val);
         }
-    }
-
-    void tree::path2key(node *pointer, int key) {
-        if (pointer == nullptr)
-            return;
-        if (pointer->data == key) {
-            std::cout << pointer->data << std::endl;
-            return;
-        }
-
-        if (pointer->data < key) {
-            std::cout << pointer->data << std::endl; // visit the node
-            path2key(pointer->left, key);
-        }
-        if (pointer->data > key) {
-            std::cout << pointer->data << " "; // visit the node
-            path2key(pointer->right, key);
-        }
-    }
-
-    node* tree::insertHelp(node *pointer, int val){
-/*
-        if(pointer == nullptr){
-            pointer = new node(val);
-            return pointer;
+        else if(pointer != root && pointer == nullptr){
+            if(prev->data > val){
+                prev->left= new node(val);
+            }
+            else if(prev->data <val){
+                prev->right= new node(val);
+            }
         }
         else {
             if (val < pointer->data) {
-                 insertHelp(pointer->left, val); //pointer->left =
+                 insertHelp2(pointer, pointer->left, val); //pointer->left =
             } else if (val > pointer->data) {
-                 insertHelp(pointer->right, val); //pointer->right =
+                 insertHelp2(pointer, pointer->right, val); //pointer->right =
             } else {
                 pointer->frequency++;
             }
-        }*/
-
-        if (root == nullptr) {
-            root = new node(val);
-        } else if (val == pointer->data) {
-            pointer->frequency++;
-        } else if (val < pointer->data) {
-            if (pointer->left != nullptr)
-                insertHelp(pointer->left, val);
-            else {
-                pointer->left = new node(val);
-            }
-        } else if (val > pointer->data) {
-            if (pointer->right != nullptr)
-                insertHelp(pointer->right,val);
-            else {
-                pointer->right = new node(val);
-            }
         }
-    }
+        }
 
-}
+    }
