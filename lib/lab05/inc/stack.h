@@ -6,29 +6,24 @@
 
 namespace lab5 {
     class stack {
-        node *head;
+        node * head;
         unsigned size;
 
     public:
         stack();
-
-        stack(std::string &data);
-
-        stack(const stack &original);
-
+        stack(std::string& data);
+        stack(const stack& original);
         virtual ~stack();
 
-        stack &operator=(const stack &RHS);
-
-        bool isEmpty() const;
-
-        unsigned stackSize() const;
-
-        std::string top() const;
-
-        void push(std::string &data);
-
+        stack & operator=(const stack& RHS);
+        bool isEmpty()const;
+        unsigned stackSize() const; // &
+        std::string top()const;
+        void push(std::string& data);
         void pop();
+
+        void printstack();
+        node* returnHead();
     };
 }
 

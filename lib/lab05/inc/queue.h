@@ -10,24 +10,19 @@ namespace lab5 {
 
     public:
         queue();
-
-        queue(std::string &data);
-
-        queue(const queue &original);
-
+        queue(std::string& data);
+        queue(const queue& original);
         virtual ~queue();
 
-        queue &operator=(const queue &RHS);
-
-        bool isEmpty() const;
-
+        queue&operator=(const queue& RHS);
+        bool isEmpty()const;
         unsigned queueSize() const;
-
-        std::string top() const;
-
-        void enqueue(std::string &data);
-
+        std::string top()const; //&
+        void enqueue(std::string& data);
         void dequeue();
+
+        void printqueue();
+        node* returnHead();
     };
 }
 

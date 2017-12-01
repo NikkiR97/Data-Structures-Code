@@ -18,8 +18,8 @@ protected:
         Rposition = test_numbers.end();
         list1 =new lab6::doubly_linked_list;
         list2 =new lab6::doubly_linked_list(test_num);
-        list3 = new lab6::doubly_linked_list(test_numbers);
-        list4= new lab6::doubly_linked_list(*list3);
+        list3 =new lab6::doubly_linked_list(test_numbers);
+        list4 =new lab6::doubly_linked_list(*list3);
     }
 
 public:
@@ -35,6 +35,7 @@ public:
     std::vector<unsigned>::iterator Lposition, Rposition;
 
 };
+
 TEST_F(Lab06_Fixture, construct_with_check_size) {
     EXPECT_EQ(0, list1->get_size());
     EXPECT_EQ(true, list1->is_empty());
@@ -66,18 +67,17 @@ TEST_F(Lab06_Fixture, node_adding_removing){
     EXPECT_EQ(list3->get_data(4),4);
 }
 
-
 TEST_F(Lab06_Fixture, Split) {
     lab6::doubly_linked_list temp_list;
     temp_list = list3->split_before(7);
-    EXPECT_EQ(temp_list.get_data(0), 7);
-    EXPECT_EQ(list3->get_data(0), 0);
+    EXPECT_EQ(7,temp_list.get_data(0)); //wrong answer
+    EXPECT_EQ(0,list3->get_data(0));
     temp_list = list3->split_after(5);
-    EXPECT_EQ(temp_list.get_data(0), 6);
-    EXPECT_EQ(list3->get_data(0), 0);
+    EXPECT_EQ(6,temp_list.get_data(0));
+    EXPECT_EQ(0,list3->get_data(0));
     temp_list = list3->split_set(2, 3);
-    EXPECT_EQ(temp_list.get_data(0), 2);
-    EXPECT_EQ(list3->get_data(0), 0);
+    EXPECT_EQ(2,temp_list.get_data(0));
+    EXPECT_EQ(0,list3->get_data(0));
 }
 
 TEST_F(Lab06_Fixture, Swap) {
@@ -88,7 +88,6 @@ TEST_F(Lab06_Fixture, Swap) {
     EXPECT_EQ(list3->get_data(0),4);
     EXPECT_EQ(list3->get_data(4),1);
 }
-
 
 TEST_F(Lab06_Fixture, overload) {
     lab6::doubly_linked_list double_list(*list3+*list3);

@@ -31,6 +31,7 @@ EXPECT_EQ(tree->size(), 0);
 EXPECT_EQ(tree->depth(), 0);
 }
 
+
 TEST_F(TreeFixture, depth)
 {
 EXPECT_EQ(built_tree->depth(), 6);

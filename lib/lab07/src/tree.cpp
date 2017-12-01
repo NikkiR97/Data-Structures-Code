@@ -24,6 +24,7 @@ namespace lab7 {
         //compare with all other nodes -> insert when you find a node pointing to nullptr
         //will not insert duplicates
 
+        /*
         node *temp = root;
 
         if (!root) {
@@ -46,7 +47,13 @@ namespace lab7 {
                 temp->frequency++;
             }
         }
+        */
 
+        node *pointer = root;
+
+        insertHelp(root,value);
+
+        return;
     }
 
 // Remove key
@@ -347,6 +354,7 @@ namespace lab7 {
 
         node_print(temp);
 
+        std::cout << std::endl;
     }
 
     void tree::print_gtl() {
@@ -361,13 +369,13 @@ namespace lab7 {
         //node *temp = root;
         int dataFreq = 0;
 
-        if (to_print == NULL)
+        if (to_print == nullptr)
             return;
 
         node_print(to_print->left);
         dataFreq = to_print->frequency;
         while(dataFreq>0) {
-            std::cout << to_print->data << std::endl; // visit the node
+            std::cout << to_print->data << " "; // visit the node
             dataFreq--;
         }
         //print_gtl();
@@ -393,9 +401,20 @@ namespace lab7 {
 //    size = size+pointer->frequency;
 //    retSize(pointer->right, size);
 
+//        if (pointer == nullptr)
+//            return size;
+//
+//        //size = size+ pointer->frequency;
+//
+//        return retSize(pointer->left, size+pointer->frequency) + retSize(pointer->right, size+pointer->frequency)+1;
+
         if (pointer == nullptr)
             return size;
-        return retSize(pointer->left, size) + retSize(pointer->right, size) + 1;
+        else {
+                size += pointer->frequency+1;
+                retSize(pointer->left, size);
+                retSize(pointer->right, size);
+        }
     }
 
     int tree::getFreq(node *pointer, int key) {
@@ -416,7 +435,7 @@ namespace lab7 {
         if (pointer == nullptr)
             return 0;
         if (pointer->data == key)
-            return pointer->frequency;;
+            return pointer->frequency;
 
         next = getFreq(pointer->left, key);
         if (next != 0)
@@ -502,4 +521,40 @@ namespace lab7 {
             path2key(pointer->right, key);
         }
     }
+
+    node* tree::insertHelp(node *pointer, int val){
+/*
+        if(pointer == nullptr){
+            pointer = new node(val);
+            return pointer;
+        }
+        else {
+            if (val < pointer->data) {
+                 insertHelp(pointer->left, val); //pointer->left =
+            } else if (val > pointer->data) {
+                 insertHelp(pointer->right, val); //pointer->right =
+            } else {
+                pointer->frequency++;
+            }
+        }*/
+
+        if (root == nullptr) {
+            root = new node(val);
+        } else if (val == pointer->data) {
+            pointer->frequency++;
+        } else if (val < pointer->data) {
+            if (pointer->left != nullptr)
+                insertHelp(pointer->left, val);
+            else {
+                pointer->left = new node(val);
+            }
+        } else if (val > pointer->data) {
+            if (pointer->right != nullptr)
+                insertHelp(pointer->right,val);
+            else {
+                pointer->right = new node(val);
+            }
+        }
+    }
+
 }

@@ -67,22 +67,22 @@ namespace lab6 {
 
 // Copy constructor
     doubly_linked_list::doubly_linked_list(const doubly_linked_list &original) {
-        node *temp = head;
-        node *before = head;
+        node *temp; // the temp of the new doubly object
+        node *before;
 
-        size = original.size;
+        size = original.size; //initializing the size variable
 
         node *temp2 = original.head;
 
-        head = new node(temp2->data);
+        head = new node(temp2->data); //initializing the head with the first data element
 
-        temp = head;
+        temp = head; //temp points to where head is pointing to
 
         temp2 = temp2->next;
 
         for (int i = 1; i < size; i++) {
             before = temp;
-            temp->next = new node(temp2->data);
+            temp->next = new node(temp2->data); //seg fault
             temp = temp->next;
             temp->prev = before;
 
@@ -124,10 +124,15 @@ namespace lab6 {
 // return the value inside of the node located at position
     unsigned doubly_linked_list::get_data(unsigned position) {
         node *temp = head;
+        unsigned temploc = 0;
 
-        for (int i = 0; i < position; i++) {
+        while(temp!=nullptr && temploc++ != position){
             temp = temp->next;
         }
+//        for (int i = 0; i < position; i++) {
+//            temp = temp->next;
+//        }
+//        temp = temp->next;
 
         return temp->data;
     }
@@ -157,14 +162,15 @@ namespace lab6 {
 
         if (!head) {
             head = new node(data);
+            temp = head;
         } else {
             while (temp->next != nullptr) {
                 temp = temp->next; //temp will equal wherever next is now pointing to
             }
             temp->next = new node(data); //temp will point to where the 'next' of the newly created node will point to
             temp->next->prev = temp;
+            tail = temp->next;
         }
-        tail = temp->next;
 
         size++;
     }
@@ -234,11 +240,40 @@ namespace lab6 {
         node *temp = head;
 
         for (int i = 0; i < position; i++) {
-            temp = temp->next;
+            if(temp!= nullptr) {
+                temp = temp->next;
+            }
         }
-        temp->prev->next = temp->next;
-        temp->next->prev = temp->prev;
+        if(!head){ // same as !temp
+            std::cout << "No nodes to remove. " << std::endl;
+        }
+        else if(temp==head){
+            temp->next->prev = nullptr;
+            delete temp;
+        }
+        else if(temp==tail){
+            temp->prev->next = nullptr;
+            delete temp;
+        }
+        /*else if(temp->next == nullptr){
+            temp->prev->next = nullptr;
+            delete temp;
+        }
+        else if(temp->prev == nullptr){
+            temp->next->prev = nullptr;
+            delete temp;
+        }*/
 
+        else if(temp->next != nullptr && temp->prev != nullptr){ //if there is a node in the front and the back of perspective removed node
+            temp->prev->next = temp->next;
+            temp->next->prev = temp->prev;
+            delete temp;
+        }
+        else if(temp->next == nullptr && temp->prev == nullptr){
+            //temp=tail;
+            //tail = temp->prev;
+            delete temp;
+        }
         size--;
     }
 
@@ -249,16 +284,38 @@ namespace lab6 {
         node *temp = head;
         node *newtemp;
 
-        for (int i = 0; i < position; i++) {
-            temp = temp->next;
-        }
+        /*
+        doubly_linked_list obj(temp->data); //initialize a new doubly object using the first element of the current array
+        newtemp = obj.head;
+        newtemp = newtemp->next;
+        temp = temp->next;
 
+        for (int i = 1; i < position; i++) {
+
+           obj.append(temp->data);
+//            newtemp = new node(temp->data);
+//            newtemp = newtemp->next;
+//            obj.size++;
+
+            temp = temp->next;
+            size--;
+        }
         temp->prev->next = nullptr;
         temp->prev = nullptr;
+        head = temp; //correct
 
-        newtemp = temp;
+        */
 
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //temp->prev->next = nullptr;
+        //temp->prev = nullptr;
+
+        //newtemp = temp;
+        //tail = temp;
+
+        /*
         doubly_linked_list obj(newtemp->data);
+        obj.head = newtemp;
         newtemp = newtemp->next;
 
         for (int i = position + 1; i < size; i++) {
@@ -267,6 +324,27 @@ namespace lab6 {
         }
 
         obj.size = size - position;
+        size = position;*/
+
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        for (int i = 0; i < position; i++) {
+            newtemp = temp;
+            temp = temp->next;
+        }
+        tail = temp; //the head of the current object remains the same
+
+        doubly_linked_list obj(temp->data);
+        //obj.head = newtemp;
+        temp = temp->next;
+
+
+        for (int i = position + 1; i < size; i++) {
+            obj.append(temp->data);
+            temp = temp->next;
+        }
+
+        newtemp->next->prev = nullptr;
+        newtemp->next = nullptr;
         size = position;
 
         return obj;
@@ -278,24 +356,27 @@ namespace lab6 {
         node *temp = head;
         node *newtemp;
 
-        for (int i = 0; i < position; i++) {
+        for (int i = 0; i <= position; i++) {
+            newtemp = temp;
             temp = temp->next;
         }
-        newtemp = temp->next;//move to the node after position
+        //move to the node after position
 
-        temp->next->prev = nullptr;
-        temp->next = nullptr;
+        tail = temp; //the head of the current object remains the same
+        doubly_linked_list obj(temp->data);
+        //obj.head = newtemp;
+        temp = temp->next;
 
-        doubly_linked_list obj(newtemp->data);
-        newtemp = newtemp->next;
-
-        for (int i = position + 2; i < size; i++) {
-            obj.append(newtemp->data);
-            newtemp = newtemp->next;
+        for (int i = position + 3; i < size; i++) {
+            obj.append(temp->data);
+            temp = temp->next;
         }
 
-        obj.size = size - position - 1;
-        size = position + 1;
+        newtemp->next->prev = nullptr;
+        newtemp->next = nullptr;
+
+        //obj.size = size - position - 1;
+        size = position+1;
 
         return obj;
 //    return ;
@@ -315,11 +396,11 @@ namespace lab6 {
         doubly_linked_list obj;
 
 
-        if (position_to - position_from + 1 == size || position_from == position_to) {
+        if (position_to - position_from + 1 == size || position_from == position_to || position_to>size) {
             std::cout << "Cannot split list within this range." << std::endl;
         }
 
-        if (position_from < position_to) {
+        else if (position_from < position_to) {
             //split before position
             for (int i = 0; i < position_from; i++) {
                 temp1 = temp; //refers to the node right before position from
@@ -331,6 +412,7 @@ namespace lab6 {
 
             doubly_linked_list obj(temp->data);
             temp = temp->next;
+
 
             for (int i = position_from + 1; i < position_to; i++) {
                 obj.append(temp->data);
@@ -413,7 +495,7 @@ namespace lab6 {
     }
 
 // Swap two sets of cards. The sets are inclusive. USE POINTERS!
-    void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to, unsigned position2_from,
+/*    void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to, unsigned position2_from,
                                       unsigned position2_to) {
         node *temp = head;
         node *mynext, *myprev, *start1, *end1, *mynext2, *myprev2, *start2, *end2;
@@ -422,7 +504,7 @@ namespace lab6 {
         count2 = 0;
 
         while (temp->next != nullptr && count1++ != position1_to) {
-            if (count1 < position1_from + 1) {
+            if (count1 == position1_from-1) {
                 myprev = temp;
                 start1 = temp->next;
             }
@@ -431,23 +513,23 @@ namespace lab6 {
         end1 = temp;
         mynext = end1->next;
 
-        /*
-        // traversing through the list backwards
-        temp = tail;
-
-        while(temp -> prev != nullptr && count2++ != (size - position2_from)){
-            if(count2 < (size - position2_to)){
-                mynext2 = temp;
-                end2 = temp -> prev;
-            }
-            temp = temp->prev;
-        }
-        start2 = temp;
-        myprev2 = start2 -> prev;*/
+//
+//        // traversing through the list backwards
+//        temp = tail;
+//
+//        while(temp -> prev != nullptr && count2++ != (size - position2_from)){
+//            if(count2 < (size - position2_to)){
+//                mynext2 = temp;
+//                end2 = temp -> prev;
+//            }
+//            temp = temp->prev;
+//        }
+//        start2 = temp;
+//        myprev2 = start2 -> prev;
         temp = head;
 
         while (temp->next != nullptr && count2++ != position2_to) {
-            if (count2 < position2_from + 1) {
+            if (count2 == position2_from-1) {
                 myprev2 = temp;
                 start2 = temp->next;
             }
@@ -456,15 +538,146 @@ namespace lab6 {
         end2 = temp;
         mynext2 = end2->next;
 
-        end1->next = mynext2;
-        start1->prev = myprev2;
-        end2->next = mynext;
-        start2->prev = myprev;
+//        end1->next = mynext2;
+//        start1->prev = myprev2;
+//        end2->next = mynext;
+//        start2->prev = myprev;
+//
+//        myprev->next = start2;
+//        mynext->prev = end2;
+//        myprev2->next = start1;
+//        mynext2->prev = end1;
+        if(position1_from == 0 && position2_to == size-1){ //both sets are exactly at the big and the end
+            start2->prev = nullptr;
+            mynext->prev = end2;
+            end2->next = mynext;
 
-        myprev->next = start2;
-        mynext->prev = end2;
-        myprev2->next = start1;
-        mynext2->prev = end1;
+            myprev2->next = start1;
+            start1->prev = myprev2;
+            end1->next = nullptr;
+        }
+        else if(position1_from == 0){ //first set is at the beg of the list
+            start2->prev = nullptr;
+            mynext->prev = end2;
+            end2->next = mynext;
+
+            myprev2->next = start1;
+            start1->prev = myprev2;
+            mynext2->prev = end1;
+            end1->next = mynext2;
+        }
+        else if(position2_to == size-1){ //first set is at the end of the list
+            myprev->next = start2;
+            start2->prev = myprev;
+            mynext->prev = end2;
+            end2->next = mynext;
+
+            myprev2->next = start1;
+            start1->prev = myprev2;
+            end1->next = nullptr;
+        }
+        else {
+
+            myprev->next = start2;
+            start2->prev = myprev;
+            mynext->prev = end2;
+            end2->next = mynext;
+
+            myprev2->next = start1;
+            start1->prev = myprev2;
+            mynext2->prev = end1;
+            end1->next = mynext2;
+
+        }
+    }*/
+
+
+   void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to, unsigned position2_from,
+                                      unsigned position2_to) {
+        node *temp = head;
+        node *mynext=head;
+        node *myprev=head;
+        node *start1=head;
+        node *end1=head;
+        node *mynext2=head;
+        node *myprev2=head;
+        node *start2=head;
+        node *end2=head;
+
+     for(int i=0; i<position1_to; i++){
+         if(temp->next!=nullptr){
+             if(i<=position1_from) {
+                 myprev = start1;
+                 start1 = temp;
+             }
+             temp = temp->next;
+         }
+     }
+     end1 = temp;
+     mynext = end1->next;
+
+     temp = head;
+
+     for(int i=0; i<position2_to; i++){
+         if(temp->next!=nullptr){
+             if(i<=position2_from) {
+                 myprev2 = start2;
+                 start2 = temp;
+             }
+             temp = temp->next;
+         }
+     }
+
+     end2 = temp;
+     mynext2 = end2->next;
+
+   if(position1_from == 0 && position2_to == size-1){ //both sets are exactly at the beg and the end
+            start2->prev = nullptr;
+            mynext->prev = end2;
+            end2->next = mynext;
+
+            myprev2->next = start1;
+            start1->prev = myprev2;
+            end1->next = nullptr;
+
+            head = start2;
+            tail = end1;
+        }
+        else if(position1_from == 0){ //first set is at the beg of the list
+            start2->prev = nullptr;
+            mynext->prev = end2;
+            end2->next = mynext;
+
+            myprev2->next = start1;
+            start1->prev = myprev2;
+            mynext2->prev = end1;
+            end1->next = mynext2;
+
+            head = start2;
+        }
+        else if(position2_to == size-1){ //second set is at the end of the list
+            myprev->next = start2;
+            start2->prev = myprev;
+            mynext->prev = end2;
+            end2->next = mynext;
+
+            myprev2->next = start1;
+            start1->prev = myprev2;
+            end1->next = nullptr;
+
+            tail = end1;
+        }
+        else {
+            myprev->next = start2;
+            start2->prev = myprev;
+            mynext->prev = end2;
+            end2->next = mynext;
+
+            myprev2->next = start1;
+            start1->prev = myprev2;
+            mynext2->prev = end1;
+            end1->next = mynext2;
+        }
     }
 
 // Overload operator=
@@ -492,11 +705,11 @@ namespace lab6 {
         }
 //    temp->data = temp1->data;
 
-        if (choice == 'a') {
-            for (int j = minsize; j < maxsize; j++) {
+        if (choice == 'a') { //size is greater
+            for (int j = minsize; j < maxsize-1; j++) {
                 remove(j);
             }
-        } else if (choice == 'b') {
+        } else if (choice == 'b') {//rhs.size is greater
             for (int j = minsize; j < maxsize; j++) {
                 append(temp1->data);
                 temp1 = temp1->next;
@@ -511,26 +724,38 @@ namespace lab6 {
 
 // Append the rhs to the end of the this list
     doubly_linked_list doubly_linked_list::operator+=(const doubly_linked_list &RHS) {
-        //doubly_linked_list obj(*this);
-        //doubly_linked_list obj2(RHS);
 
+        /*doubly_linked_list obj(*this);
         node *temp = RHS.head;
-        //node *temp0=head;
-        //temp0 = temp0->next;
+        node *temp1 = obj.tail;
 
-        //doubly_linked_list obj(*this);
+        while(temp!=nullptr){
+            temp1->next = new node(temp->data);
+            temp1->next->prev = temp1;
+            temp1 = temp1->next;
+            temp = temp->next;
+        }
 
-        //node *temp = obj2.head;
+        return obj;*/
 
-        while (temp->next != nullptr) {
+        /*
+        node *temp = RHS.head;
+
+        while(temp!= nullptr){
             append(temp->data);
             temp = temp->next;
         }
-        append(temp->data);
 
+        return *this;*/
 
-        return *this;
-        //return obj; //
+        doubly_linked_list obj(*this);
+        doubly_linked_list obj1(RHS);
+
+        obj.merge(obj1);
+
+        *this = obj;
+
+        return obj;
 //    return <#initializer#>;
     }
 

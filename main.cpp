@@ -1,13 +1,22 @@
 #include "lib/lab06/inc/deck.h"
 #include "lib/lab07/inc/tree.h"
 #include "lib/lab07/src/tree.cpp"
+#include "lib/lab04/inc/linked_list.h"
 #include <iostream>
 #include <vector>
 
 
 int main() {
     //deck newdeck;
+    /*
+    int intArray[]={0,1,2,3,4,5};
+    lab4::linked_list *test_list = new lab4::linked_list(intArray,6);
+    test_list->print();
 
+    std::cout<<std::endl;
+    std::cout<<std::endl;*/
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::vector <unsigned> val(10);
     val = {1,2,3,4,5,6,7,8,9,10};
 //   doubly_linked_list a(val);
@@ -20,6 +29,9 @@ int main() {
     std::vector <unsigned> val3(5);
     val3 = {1,2,3};
 
+    std::vector <unsigned> val4(5);
+    val4 = {0,1,2,3,4,5,6,7,8,9};
+
 //    std::cout <<"The current list1:" <<std::endl;
 //    doubly_linked_list list1(val2);
 //    list1.print();
@@ -31,10 +43,24 @@ int main() {
 //    std::cout <<"List2 = List1" <<std::endl;
 //    list2=list1;
 //    list2.print();
+    lab6::doubly_linked_list test14swap(val4);
+
+    std::cout << "Swapping the pos 3 and pos 6:" << std::endl;
+    test14swap.swap(3,6);
+    test14swap.print();
+    std::cout << "Swapping sets 0-2 and 4-5:" << std::endl;
+    test14swap.swap_set(0,2,8,9);
+    test14swap.print();
+
+    std::cout << "Here is the list with itself appended onto it. " << std::endl;
+    test14swap += test14swap;
+    test14swap.print();
 
     std::cout <<"The current list:" <<std::endl;
     lab6::doubly_linked_list obj(val);
     obj.print();
+
+    std::cout << "Getting the data at:" << std::endl;
 
     std::vector <unsigned> newset = obj.get_set(4,7);
     std::cout << "This is the returned set between position 4 and 7." << std::endl;
@@ -42,6 +68,9 @@ int main() {
         std::cout << newset[i] << " ";
     }
     std::cout << std::endl;
+
+    std::cout << "Getting data at position 6: " << std::endl;
+    std::cout << obj.get_data(6) << std::endl;
 
     std::cout <<"Inserted zero before position 1:" <<std::endl;
     obj.insert_before(1,0);
@@ -111,6 +140,10 @@ int main() {
     obj = obj7;
     obj.print();
 
+    std::cout<<"Removing pos 4 from obj7: " <<std::endl;
+    obj7.remove(4);
+    obj7.print();
+
     std::cout << std::endl;
 
     std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~lab 7~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "<< std::endl;
@@ -122,18 +155,20 @@ int main() {
     object.insert(5);
     object.insert(3);
     object.insert(14);
-    object.insert(5);
-    object.insert(3);
+    //object.insert(5);
+    //object.insert(20);
+    //object.insert(15);
+    //object.insert(3);
 
     object.print();
 
-    object.remove(5); //will remove the node itself and all instances of 5 will disappear
-    std::cout<<std::endl;
-    object.print();
-
-    object.remove(10);
-     std::cout<<std::endl;
-     object.print();
+//    object.remove(5); //will remove the node itself and all instances of 5 will disappear
+//    std::cout<<std::endl;
+//    object.print();
+//
+//    object.remove(10);
+//     std::cout<<std::endl;
+//     object.print();
 
    //if(object.in_tree(14)){
    //    std::cout << "14 exists in the tree. " << std::endl;

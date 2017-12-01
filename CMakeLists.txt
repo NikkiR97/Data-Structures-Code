@@ -5,7 +5,7 @@ project(cmpe126f17_labs)
 
 add_definitions(-std=c++11)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp lib/lab08/inc/sorts.h)
 add_executable(labs_main ${SOURCE_FILES})
 
 include_directories(lib/lab04/inc lib/lab06/inc lib/lab07/inc)
