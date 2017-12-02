@@ -14,6 +14,25 @@ lab6::doubly_linked_list sorts::insertion_sort(lab6::doubly_linked_list input, i
         working_list.setter(j+1,key);
     }
 
+//    if (iterations == 0) //handles 0 iteration case
+//    {
+//        return working_list;
+//    }
+//    if (iterations > working_list.get_size() - 1) // handles case for where iterations will pass the linked list
+//    {
+//        iterations = working_list.get_size() - 1;
+//    }
+//    for (int i = 1; i <= iterations; i++) //general case
+//    {
+//        for (int j = i; j > 0; j--) {
+//            if (working_list.get_data(j) < working_list.get_data(j - 1)) {
+//                //working_list.swap(j, j - 1);
+//            } else {
+//                break;
+//            }
+//        }
+//    }
+
     return working_list;
 }
 
@@ -30,7 +49,27 @@ lab6::doubly_linked_list sorts::selection_sort(lab6::doubly_linked_list input, i
         }
         working_list.swap(i,min);
     }
-    return working_list;
+      return working_list;
+
+//    if (iterations == 0)
+//        return working_list;
+//    else {
+//        for (int k = 0; k < iterations; k++) {
+//            int length = working_list.get_size();
+//            for (int i = 0; i < length - 1; i++) {
+//                int iMin = working_list.get_data(i);
+//                for (int j = i + 1; j < length; j++) {
+//                    if (working_list.get_data(j) < working_list.get_data(iMin)) {
+//                        iMin = working_list.get_data(j);
+//                    }
+//                }
+//                working_list.swap(i, iMin);
+//            }
+//            return working_list;
+//        }
+//    }
+
+
 }
 
 lab6::doubly_linked_list sorts::bubble_sort(lab6::doubly_linked_list input, int iterations) {

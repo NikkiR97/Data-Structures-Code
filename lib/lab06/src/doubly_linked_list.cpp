@@ -483,15 +483,64 @@ namespace lab6 {
 
         mynext2 = curr2->next;
 
-        curr->next = mynext2;
-        curr->prev = myprev2;
-        curr2->next = mynext;
-        curr2->prev = myprev;
+//        curr->next = mynext2;
+//        curr->prev = myprev2;
+//        curr2->next = mynext;
+//        curr2->prev = myprev;
+//
+//        myprev->next = curr2;
+//        mynext->prev = curr2;
+//        myprev2->next = curr;
+//        mynext2->prev = curr;
 
-        myprev->next = curr2;
-        mynext->prev = curr2;
-        myprev2->next = curr;
-        mynext2->prev = curr;
+
+        if(position1== 0 && position2 == size-1){ //both sets are exactly at the beg and the end
+            curr->next = nullptr;
+            curr->prev = myprev2;
+            curr2->next = mynext;
+            curr2->prev = nullptr;
+
+            mynext->prev = curr2;
+            myprev2->next = curr;
+
+            head = curr2;
+            tail = curr;
+        }
+        else if(position1 == 0){ //first set is at the beg of the list
+            curr->next = mynext2;
+            curr->prev = myprev2;
+            curr2->next = mynext;
+            curr2->prev = nullptr;
+
+            mynext->prev = curr2;
+            myprev2->next = curr;
+            mynext2->prev = curr;
+
+            head = curr2;
+        }
+        else if(position2 == size-1){ //second set is at the end of the list
+            curr->next = nullptr;
+            curr->prev = myprev2;
+            curr2->next = mynext;
+            curr2->prev = myprev;
+
+            myprev->next = curr2;
+            mynext->prev = curr2;
+            myprev2->next = curr;
+
+            tail = curr;
+        }
+        else {
+            curr->next = mynext2;
+            curr->prev = myprev2;
+            curr2->next = mynext;
+            curr2->prev = myprev;
+
+            myprev->next = curr2;
+            mynext->prev = curr2;
+            myprev2->next = curr;
+            mynext2->prev = curr;
+        }
     }
 
 // Swap two sets of cards. The sets are inclusive. USE POINTERS!

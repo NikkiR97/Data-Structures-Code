@@ -188,7 +188,7 @@ int main() {
 
    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //lab5 tests
-    std::string infixExp = "10+2-2*3"; //10-6+3*8+5*8
+    std::string infixExp = "10+2-2/3"; //10-6+3*8+5*8
     int result;
 
     lab5::expression obj11(infixExp);
@@ -199,9 +199,10 @@ int main() {
 
     std::cout << "This is the postfix: " << std::endl;
     //obj11.convert_to_postfix(infixExp);
-    obj11.print_postfix();
 
     result = obj11.calculate_postfix();
+
+    obj11.print_postfix();
 
     std::cout << "This is the postfix calculated result: " << result << std::endl;
 

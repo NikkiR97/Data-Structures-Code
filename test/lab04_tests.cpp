@@ -10,14 +10,12 @@ protected:
     lab4::linked_list * test_list;
 };
 
-
 TEST_F(Lab04_Fixture, constructor_test) {
     test_list=new lab4::linked_list(2);
     delete test_list;
     int intArray[]={0,1,2,3,4,5};
     test_list = new lab4::linked_list(intArray,6);
 }
-
 
 TEST_F(Lab04_Fixture, print_test) {
     test_list=new lab4::linked_list(2);
@@ -146,11 +144,11 @@ TEST_F(Lab04_Fixture, remove_test) {
     output = testing::internal::GetCapturedStdout();
     EXPECT_EQ("0 -> 1 -> 3 -> 4 -> null", output)<< "end of list removal";
 
-//    test_list->remove(0);
-//    testing::internal::CaptureStdout();
-//    test_list->print();
-//    output = testing::internal::GetCapturedStdout();
-//    EXPECT_EQ("1 -> 3 -> 4 -> null", output)<< "beginning  of list removal";
+    test_list->remove(0);
+    testing::internal::CaptureStdout();
+    test_list->print();
+    output = testing::internal::GetCapturedStdout();
+    EXPECT_EQ("1 -> 3 -> 4 -> null", output)<< "beginning  of list removal";
 
 }
 
