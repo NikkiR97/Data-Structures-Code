@@ -12,10 +12,12 @@ namespace lab5 {
         stack Eval;
 
         int length;
-
-        void convert_to_postfix(std::string &input_expression);
-        void parse_to_infix(std::string &input_expression);
+        std::string newexp;
+        
     public:
+        void convert_to_postfix(std::string &input_expression); //move back to private area
+        void parse_to_infix(std::string &input_expression); //move back to private area
+        
         expression();
         expression(std::string& input_expression);
 
@@ -23,8 +25,7 @@ namespace lab5 {
         void print_infix();
         void print_postfix();
         friend std::istream &operator>>(std::istream &steam, expression &RHS);
-
-
+        
         bool is_number(std::string input_string);
         bool is_operator(std::string input_string);
 

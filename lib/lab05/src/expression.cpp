@@ -138,7 +138,7 @@ void expression::convert_to_postfix(std::string &input_expression) {
             } else if (value == ")") {
                 while (!Operators.isEmpty() && Op != "(") {
                     Op = Operators.top();
-                    if (Op != ")" && Op != "(") {
+                    if (Op != ")" && Op != "(" && Op != " ") {
                         postfix.enqueue(Op);
                     }
                     Operators.pop();
@@ -151,7 +151,7 @@ void expression::convert_to_postfix(std::string &input_expression) {
                        findHigher(value, Operators.top())) //want to stop when you reach a second parentheses
                 {
                     Op = Operators.top();
-                    if (Op != ")" && Op != "(") {
+                    if (Op != ")" && Op != "(" && Op!= " ") {
                         postfix.enqueue(Op);
                     }
                     Operators.pop(); //want to pop when current operator is lower in precedence to the operator at the top of the stack
@@ -160,7 +160,7 @@ void expression::convert_to_postfix(std::string &input_expression) {
             }
                 // Else if character is an operand
 
-            else if (!is_operator(value)) {
+            else if (!is_operator(value) && value != " ") {
                 postfix.enqueue(value); //enqueue if it's a number
             }
 
@@ -176,15 +176,13 @@ void expression::convert_to_postfix(std::string &input_expression) {
         }
 
         length = newlen;
-
     }
-
 
     void expression::parse_to_infix(std::string &input_expression) {
         //set the numbers into a queue
         //set the operators into a queue
 
-        std::string newexp = "";
+        //std::string newexp = "";
         int k = 0;
 
         int newlen = 0;
@@ -245,6 +243,7 @@ void expression::convert_to_postfix(std::string &input_expression) {
     }
 
     int expression::calculate_postfix() {
+        convert_to_postfix(newexp);
         node *temp = postfix.returnHead();
 
         std::string tempVal1, tempVal2, tempRes, myOp;
@@ -275,12 +274,16 @@ void expression::convert_to_postfix(std::string &input_expression) {
 
     void expression::print_infix() {
         node *temp = infix.returnHead();
+        int i=0;
 
         while (temp != nullptr) { //-> next
-            std::cout << temp->data << " ";
+            if(i>0){
+            std::cout << " ";}
+
+            std::cout << temp->data;
             temp = temp->next;
+            i++;
         }
-        std::cout << std::endl;
     }
 
     void expression::print_postfix() {
@@ -426,7 +429,12 @@ void expression::convert_to_postfix(std::string &input_expression) {
         if (Op == "*")
             result = v1 * v2;
         else if (Op == "/")
+        if(v2!=0) {
             result = v1 / v2; //will do integer division
+        }
+        else{
+            result=0;
+        }
         else if (Op == "+")
             result = v1 + v2;
         else if (Op == "-")

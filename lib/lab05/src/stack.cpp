@@ -92,6 +92,7 @@ void stack::push(std::string &data) {
     }
     else{
         head = new node(data);
+        size++;
     }
 }
 

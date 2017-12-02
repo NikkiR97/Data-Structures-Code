@@ -77,6 +77,7 @@ void queue::enqueue(std::string &data) {
     //head and tail can be pointing to nothing
     if (head == nullptr || tail == nullptr) {
         head = tail = new node(data);
+        size++;
     } else {
         //step 1 create a new node
         node *temp = new node(data); //temp is pointing to the address of the new node

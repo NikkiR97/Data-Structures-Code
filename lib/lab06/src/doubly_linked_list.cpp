@@ -794,4 +794,15 @@ namespace lab6 {
             return output;
         }
     }
+
+    void doubly_linked_list::setter(int location, int value){
+        node* temp= head;
+        int temploc;
+
+        while(temp!= nullptr && temploc++ != location){
+            temp = temp->next;
+        }
+
+        temp->data = value;
+    }
 }

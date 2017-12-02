@@ -1,3 +1,4 @@
+#include "lib/lab05/inc/expression.h"
 #include "lib/lab06/inc/deck.h"
 #include "lib/lab07/inc/tree.h"
 #include "lib/lab07/src/tree.cpp"
@@ -155,24 +156,26 @@ int main() {
     object.insert(5);
     object.insert(3);
     object.insert(14);
-    //object.insert(5);
-    //object.insert(20);
-    //object.insert(15);
-    //object.insert(3);
+    object.insert(5);
+    object.insert(20);
+    object.insert(15);
+    object.insert(3);
 
     object.print();
 
-//    object.remove(5); //will remove the node itself and all instances of 5 will disappear
-//    std::cout<<std::endl;
-//    object.print();
-//
-//    object.remove(10);
-//     std::cout<<std::endl;
-//     object.print();
+    std::cout << "removing 5:";
+    object.remove(5); //will remove the node itself and all instances of 5 will disappear
+    std::cout<<std::endl;
+    object.print();
 
-    //if(object.in_tree(14)){
-    //    std::cout << "14 exists in the tree. " << std::endl;
-    //}
+    std::cout << "removing 10:";
+    object.remove(10);
+     std::cout<<std::endl;
+     object.print();
+
+    if(object.in_tree(14)){
+        std::cout << "14 exists in the tree. " << std::endl;
+    }
 
     std::cout << std::endl;
     std::cout << "This is the size of the tree: " << object.size() << std::endl;
@@ -182,6 +185,25 @@ int main() {
     std::cout << "This is the path to the key (10): ";
     object.path_to(10);
     std::cout << std::endl;
+
+   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //lab5 tests
+    std::string infixExp = "10+2-2*3"; //10-6+3*8+5*8
+    int result;
+
+    lab5::expression obj11(infixExp);
+    std::cout << "This is the infix: " << std::endl;
+    obj11.print_infix();
+
+    std::cout <<std::endl;
+
+    std::cout << "This is the postfix: " << std::endl;
+    //obj11.convert_to_postfix(infixExp);
+    obj11.print_postfix();
+
+    result = obj11.calculate_postfix();
+
+    std::cout << "This is the postfix calculated result: " << result << std::endl;
 
     return 0;
 }

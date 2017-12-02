@@ -42,6 +42,8 @@ namespace lab6 {
         doubly_linked_list operator=(const doubly_linked_list &RHS); //
         doubly_linked_list operator+=(const doubly_linked_list &RHS);//
 
+        void setter(int location, int value);
+
         void print();
 
         std::string to_string();
