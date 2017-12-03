@@ -3,18 +3,8 @@
 
 lab6::doubly_linked_list sorts::insertion_sort(lab6::doubly_linked_list input, int iterations) {
     lab6::doubly_linked_list working_list(input); //sets equal the incoming doubly linked list
-    int j, i, key;
-
-//    for(int i=1; i<iterations; i++){
-//        key = working_list.get_data(i);
-//        j=i-1;
-//        while(j>=0 && working_list.get_data(j) > key){
-//            working_list.setter(j+1, working_list.get_data(j));
-//            working_list.swap(j, j+1);//working_list.get_data(j);
-//            j=j-1;
-//        }
-//        working_list.setter(j+1,key);
-//    }
+    int j, i;
+    int m;
 
     if (iterations == 0) //handles 0 iteration case
     {
@@ -24,14 +14,15 @@ lab6::doubly_linked_list sorts::insertion_sort(lab6::doubly_linked_list input, i
     {
         iterations = working_list.get_size() - 1;
     }
-    for (int i = 1; i <= iterations; i++) //general case
-    {
-        for (int j = i; j > 0; j--) {
-                 if (working_list.get_data(j) < working_list.get_data(j - 1)) {
-                     working_list.swap(j, j - 1);
-                     } else {
-                     break;
-            }
+    for(int i=1; i<=iterations; i++){
+        //j=i;
+        for(int j= i; j>0; j--) {
+                if (working_list.get_data(j) < working_list.get_data(j-1)) {
+                    working_list.swap_data(j,j-1);
+                }
+                else{
+                    break;
+                }
         }
     }
 
@@ -39,43 +30,51 @@ lab6::doubly_linked_list sorts::insertion_sort(lab6::doubly_linked_list input, i
 }
 
 lab6::doubly_linked_list sorts::selection_sort(lab6::doubly_linked_list input, int iterations) {
-    lab6::doubly_linked_list working_list = input;
-    int min;
+    lab6::doubly_linked_list working_list(input);
+    int min, min_index;
+    unsigned size = working_list.get_size();
 
-    for(int i=0; i<iterations-1; i++){
-        min = i;
-        for(int j=0; j<iterations; j++) {
-            if(working_list.get_data(j) < working_list.get_data(i)){
-                min=j;
+    if(iterations>size){
+        iterations = size-1;
+    }
+        for (int i = 0; i < iterations; i++) {
+            min = working_list.get_data(i);
+            min_index = i;
+            for (int j = i+1; j < size; j++) {
+                if (working_list.get_data(j) < min) {
+                    min = working_list.get_data(j);
+                    min_index = j;
+                }
+            }
+            if (min_index != i)
+            {
+            working_list.swap_data(i, min_index); //swap with the node at the front
             }
         }
-        working_list.swap(i,min);
-    }
-      return working_list;
 
-//    if (iterations == 0)
-//        return working_list;
-//    else {
-//        for (int k = 0; k < iterations; k++) {
-//            int length = working_list.get_size();
-//            for (int i = 0; i < length - 1; i++) {
-//                int iMin = working_list.get_data(i);
-//                for (int j = i + 1; j < length; j++) {
-//                    if (working_list.get_data(j) < working_list.get_data(iMin)) {
-//                        iMin = working_list.get_data(j);
-//                    }
-//                }
-//                working_list.swap(i, iMin);
-//            }
-//            return working_list;
-//        }
-//    }
-
-
+        return working_list;
 }
 
 lab6::doubly_linked_list sorts::bubble_sort(lab6::doubly_linked_list input, int iterations) {
     lab6::doubly_linked_list working_list = input;
+    unsigned size = working_list.get_size();
+
+    for(int i=0; i<iterations; i++){
+        for(int j=0; j<size-1; j++){
+            if(working_list.get_data(j) > working_list.get_data(j+1)) {
+                working_list.swap_data(j, j + 1);
+            }
+        }
+    }
+
+    /*for (int i = 0; i < iterations - 1; i++){
+        for (int j = 0; j < size - i - 1; j++) {
+            if (working_list.get_data(j) > working_list.get_data(j + 1)) {
+                working_list.swap_data(working_list.get_data(j), working_list.get_data(j + 1));
+            }
+        }
+    }*/
+
     return working_list;
 }
 
