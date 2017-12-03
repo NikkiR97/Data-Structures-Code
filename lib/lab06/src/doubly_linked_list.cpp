@@ -464,8 +464,7 @@ namespace lab6 {
     }
 
 // Swap two nodes in the list. USE POINTERS. Do not just swap the values!
-    /*
-    void doubly_linked_list::swap(unsigned position1, unsigned position2) {
+    /*void doubly_linked_list::swap(unsigned position1, unsigned position2) { //orginal swap function
         node *curr = head;
         node *curr2 = head;
         node *mynext, *myprev, *mynext2, *myprev2;
@@ -548,7 +547,7 @@ namespace lab6 {
         }
     }*/
 
-    void doubly_linked_list::swap(unsigned position1, unsigned position2) {
+   /* void doubly_linked_list::swap(unsigned position1, unsigned position2) {
         node *temp = head;
         node *temp1 = head;
         node *n1;
@@ -575,6 +574,126 @@ namespace lab6 {
             temp1->next->prev = temp1; // n1;
         if (temp1->prev != nullptr)
             temp1->prev->next = temp1; // n1;
+    }*/
+
+    void doubly_linked_list::swap(unsigned position1, unsigned position2) {
+        node *temp1 = head;
+        node *temp2 = head;
+        node *prev1=nullptr;
+        node *next1=nullptr;
+        node *prev2=nullptr;
+        node *next2=nullptr;
+
+        for(int i=0; i<position1; i++) {
+            if (temp1 != nullptr) {
+                prev1 = temp1;
+                temp1 = temp1->next;
+            }
+        }
+        next1 = temp1->next;
+
+        for(int i=0; i<position2; i++){
+            if(temp2 != nullptr){
+                prev2 = temp2;
+                temp2 = temp2->next;
+            }
+        }
+        next2 = temp2->next;
+
+
+        if(position2 == position1+1){ //temp1 and temp2 are next to each other
+
+            if (position1== 0 && position2 == size-1) { //only two nodes
+                temp1->next = nullptr;
+                temp1->prev = temp2;
+
+                temp2->next = temp1;
+                temp2->prev = nullptr;
+
+                head = temp2;
+                tail = temp1;
+            }
+            else if (position1 == 0){ //first node is at the beginning of the list
+                temp1->next = next2;
+                temp1->prev = temp2;
+                next2->prev = temp1;
+
+                temp2->next = temp1;
+                temp2->prev = nullptr;
+
+                head = temp2;
+            }
+            else if (position2 == size-1) { //second node is at the end of the list
+                temp1->next = nullptr;
+                temp1->prev = temp2;
+
+                temp2->next = temp1;
+                temp2->prev = prev1;
+                prev1->next = temp2;
+
+                tail = temp1;
+            }
+            else {
+                temp1->next = next2;
+                temp1->prev = temp2;
+                next2->prev = temp1;
+
+                temp2->next = temp1;
+                temp2->prev = prev1;
+                prev1->next = temp2;
+            }
+        }
+        else {
+            if(position1== 0 && position2 == size-1){ //both nodes are exactly at the beg and the end
+                temp1->next = nullptr;
+                temp1->prev = prev2;
+                temp2->next = next1;
+                temp2->prev = nullptr;
+
+                next1->prev = temp2;
+                prev2->next = temp1;
+
+                head = temp2;
+                tail = temp1;
+            }
+            else if(position1 == 0){ //first node is at the beg of the list
+                temp1->next = next2;
+                temp1->prev = prev2;
+                temp2->next = next1;
+                temp2->prev = nullptr;
+
+                next1->prev = temp2;
+                prev2->next = temp1;
+                next2->prev = temp1;
+
+                head = temp2;
+            }
+            else if(position2 == size-1){ //second node is at the end of the list
+                temp1->next = nullptr;
+                temp1->prev = prev2;
+                temp2->next = next1;
+                temp2->prev = prev1;
+
+                prev1->next = temp2;
+                next1->prev = temp2;
+                prev2->next = temp1;
+
+                tail = temp1;
+            }
+            else {
+                temp1->next = next2;
+                temp1->prev = prev2;
+                temp2->next = next1;
+                temp2->prev = prev1;
+
+                prev1->next = temp2;
+                next1->prev = temp2;
+                prev2->next = temp1;
+                next2->prev = temp1;
+            }
+
+        }
+
     }
 
 // Swap two sets of cards. The sets are inclusive. USE POINTERS!
@@ -886,5 +1005,39 @@ namespace lab6 {
         }
 
         temp->data = value;
+    }
+
+    void doubly_linked_list::swap_data(unsigned position1, unsigned position2){
+        node *temp1 = head;
+        node *temp2 = head;
+        node *prev1=nullptr;
+        node *next1=nullptr;
+        node *prev2=nullptr;
+        node *next2=nullptr;
+
+        for(int i=0; i<position1; i++) {
+            if (temp1->next != nullptr) {
+                prev1 = temp1;
+                temp1 = temp1->next;
+            }
+        }
+        next1 = temp1->next;
+
+        for(int i=0; i<position2; i++){
+            if(temp2->next != nullptr){
+                prev2 = temp2;
+                temp2 = temp2->next;
+            }
+        }
+        next2 = temp2->next;
+
+        int temp;
+        temp = temp1->data;
+        temp1->data = temp2->data;
+        temp2->data = temp;
+    }
+
+    void doubly_linked_list::swap2(unsigned position1, unsigned position2){
+        swap_set(position1, position1, position2, position2);
     }
 }

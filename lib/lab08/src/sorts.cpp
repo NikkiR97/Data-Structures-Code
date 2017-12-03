@@ -18,7 +18,7 @@ lab6::doubly_linked_list sorts::insertion_sort(lab6::doubly_linked_list input, i
         //j=i;
         for(int j= i; j>0; j--) {
                 if (working_list.get_data(j) < working_list.get_data(j-1)) {
-                    working_list.swap_data(j,j-1);
+                    working_list.swap(j-1,j);
                 }
                 else{
                     break;
@@ -48,7 +48,7 @@ lab6::doubly_linked_list sorts::selection_sort(lab6::doubly_linked_list input, i
             }
             if (min_index != i)
             {
-            working_list.swap_data(i, min_index); //swap with the node at the front
+            working_list.swap(i, min_index); //swap with the node at the front
             }
         }
 
@@ -62,7 +62,7 @@ lab6::doubly_linked_list sorts::bubble_sort(lab6::doubly_linked_list input, int 
     for(int i=0; i<iterations; i++){
         for(int j=0; j<size-1; j++){
             if(working_list.get_data(j) > working_list.get_data(j+1)) {
-                working_list.swap_data(j, j + 1);
+                working_list.swap(j, j+1);
             }
         }
     }
@@ -79,11 +79,41 @@ lab6::doubly_linked_list sorts::bubble_sort(lab6::doubly_linked_list input, int 
 }
 
 lab6::doubly_linked_list sorts::cocktail_sort(lab6::doubly_linked_list input, int iterations) {
-    lab6::doubly_linked_list working_list = input;
+    lab6::doubly_linked_list working_list(input);
+    unsigned size = working_list.get_size();
+
+    //have to go back and forth until still needs to be swapped
+
+    for(int i=1; i<=iterations+1; i++) {
+        if(iterations==0){
+            continue;
+        }
+        if (i%2 == 0) {
+            for (int j = 0; j < size-1; j++) {
+                if (working_list.get_data(j) > working_list.get_data(j + 1)) {
+                    working_list.swap(j, j+1);
+                }
+            }
+        }
+        else if(i%2 == 1){
+            for (int j = size-1; j >= 1 ; j--) {
+                if (working_list.get_data(j-1) > working_list.get_data(j)) {
+                    working_list.swap(j-1, j);
+                }
+            }
+        }
+    }
     return working_list;
 }
 
 lab6::doubly_linked_list sorts::quick_sort(lab6::doubly_linked_list input) {
+    lab6::doubly_linked_list working_list(input);
+    int high=working_list.get_size()-1;
+    int low=0;
+
+    quickSortHelper(working_list,low,high);
+
+    return working_list;
     return lab6::doubly_linked_list();
 }
 
@@ -94,3 +124,32 @@ lab6::doubly_linked_list sorts::merge_sort(lab6::doubly_linked_list input) {
 lab6::doubly_linked_list sorts::radix_sort(lab6::doubly_linked_list input) {
     return lab6::doubly_linked_list();
 }
+
+
+int sorts::partition(lab6::doubly_linked_list& obj,int low,int high){
+
+int pivot=obj.get_data(high);
+int i=(low-1);
+
+for(int j=low;j<=high-1;j++)
+{
+if(obj.get_data(j)<=pivot)
+{
+i++;
+obj.swap(i,j);
+}
+}
+obj.swap(i+1,high);
+return(i+1);
+}
+
+int sorts::quickSortHelper(lab6::doubly_linked_list&obj,int low,int high){
+if(low<high)
+{
+int pi=partition(obj,low,high);
+quickSortHelper(obj,low,pi-1);
+quickSortHelper(obj,pi+1,high);
+}
+}
+
+

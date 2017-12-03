@@ -44,6 +44,12 @@ namespace lab6 {
 
         void setter(int location, int value);
 
+        void swap_data(unsigned position1, unsigned position2);
+
+        void swap1(unsigned position1, unsigned position2);
+
+        void swap2(unsigned position1, unsigned position2);
+
         void print();
 
         std::string to_string();
