@@ -12,6 +12,7 @@ namespace lab5 {
         stack Eval;
 
         int length;
+        std::string origexp;
         std::string newexp;
         
     public:

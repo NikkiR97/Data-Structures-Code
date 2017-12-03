@@ -464,21 +464,26 @@ namespace lab6 {
     }
 
 // Swap two nodes in the list. USE POINTERS. Do not just swap the values!
+    /*
     void doubly_linked_list::swap(unsigned position1, unsigned position2) {
         node *curr = head;
         node *curr2 = head;
         node *mynext, *myprev, *mynext2, *myprev2;
 
         for (int i = 0; i < position1; i++) {
-            myprev = curr;
-            curr = curr->next;
+            if(curr!=nullptr) {
+                myprev = curr;
+                curr = curr->next;
+            }
         }
 
         mynext = curr->next;
 
         for (int j = 0; j < position2; j++) {
-            myprev2 = curr2;
-            curr2 = curr2->next;
+            if(curr2!=nullptr) {
+                myprev2 = curr2;
+                curr2 = curr2->next;
+            }
         }
 
         mynext2 = curr2->next;
@@ -541,10 +546,39 @@ namespace lab6 {
             myprev2->next = curr;
             mynext2->prev = curr;
         }
+    }*/
+
+    void doubly_linked_list::swap(unsigned position1, unsigned position2) {
+        node *temp = head;
+        node *temp1 = head;
+        node *n1;
+        for (int i = 0; i < position1; i++) {
+            temp = temp->next;
+        }
+        for (int j = 0; j < position2; j++) {
+            temp1 = temp1->next;
+        }
+        n1->next = temp->next;
+        n1->prev = temp->prev;
+
+        temp->prev = temp1->prev;
+        temp->next = temp1->next;
+
+        temp1->prev = n1->prev;
+        temp1->next = n1->next;
+
+        if (temp->next != nullptr)
+            temp->next->prev = temp; // n2;
+        if (temp->prev != nullptr)
+            temp->prev->next = temp; // n2;
+        if (temp1->next != nullptr)
+            temp1->next->prev = temp1; // n1;
+        if (temp1->prev != nullptr)
+            temp1->prev->next = temp1; // n1;
     }
 
 // Swap two sets of cards. The sets are inclusive. USE POINTERS!
-/*    void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to, unsigned position2_from,
+ /*   void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to, unsigned position2_from,
                                       unsigned position2_to) {
         node *temp = head;
         node *mynext, *myprev, *start1, *end1, *mynext2, *myprev2, *start2, *end2;
@@ -638,11 +672,10 @@ namespace lab6 {
             end1->next = mynext2;
 
         }
-    }*/
+    }
+*/
 
-
-    void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to, unsigned position2_from,
-                                      unsigned position2_to) {
+    void doubly_linked_list::swap_set(unsigned position1_from, unsigned position1_to, unsigned position2_from, unsigned position2_to) {
         node *temp = head;
         node *mynext=head;
         node *myprev=head;
@@ -846,7 +879,7 @@ namespace lab6 {
 
     void doubly_linked_list::setter(int location, int value){
         node* temp= head;
-        int temploc;
+        int temploc=0;
 
         while(temp!= nullptr && temploc++ != location){
             temp = temp->next;

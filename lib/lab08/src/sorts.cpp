@@ -1,37 +1,39 @@
 #include "sorts.h"
+#include "doubly_linked_list.h"
 
 lab6::doubly_linked_list sorts::insertion_sort(lab6::doubly_linked_list input, int iterations) {
-    lab6::doubly_linked_list working_list = input; //sets equal the incoming doubly linked list
+    lab6::doubly_linked_list working_list(input); //sets equal the incoming doubly linked list
     int j, i, key;
 
-    for(int i=1; i<iterations; i++){
-        key = working_list.get_data(i);
-        j=i-1;
-        while(j>=0 && working_list.get_data(j) > key){
-            working_list.swap(j, j+1);//working_list.get_data(j);
-            j=j-1;
-        }
-        working_list.setter(j+1,key);
-    }
-
-//    if (iterations == 0) //handles 0 iteration case
-//    {
-//        return working_list;
-//    }
-//    if (iterations > working_list.get_size() - 1) // handles case for where iterations will pass the linked list
-//    {
-//        iterations = working_list.get_size() - 1;
-//    }
-//    for (int i = 1; i <= iterations; i++) //general case
-//    {
-//        for (int j = i; j > 0; j--) {
-//            if (working_list.get_data(j) < working_list.get_data(j - 1)) {
-//                //working_list.swap(j, j - 1);
-//            } else {
-//                break;
-//            }
+//    for(int i=1; i<iterations; i++){
+//        key = working_list.get_data(i);
+//        j=i-1;
+//        while(j>=0 && working_list.get_data(j) > key){
+//            working_list.setter(j+1, working_list.get_data(j));
+//            working_list.swap(j, j+1);//working_list.get_data(j);
+//            j=j-1;
 //        }
+//        working_list.setter(j+1,key);
 //    }
+
+    if (iterations == 0) //handles 0 iteration case
+    {
+        return working_list;
+    }
+    if (iterations > working_list.get_size() - 1) // handles case for where iterations will pass the linked list
+    {
+        iterations = working_list.get_size() - 1;
+    }
+    for (int i = 1; i <= iterations; i++) //general case
+    {
+        for (int j = i; j > 0; j--) {
+                 if (working_list.get_data(j) < working_list.get_data(j - 1)) {
+                     working_list.swap(j, j - 1);
+                     } else {
+                     break;
+            }
+        }
+    }
 
     return working_list;
 }

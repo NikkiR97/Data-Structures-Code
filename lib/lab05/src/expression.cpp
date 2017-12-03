@@ -33,6 +33,7 @@ namespace lab5 {
             std::string newinput(first); //convert the first element of the string which has been converted to a character back into a string
             infix.enqueue(newinput); //separate out everything into a node for each
         }*/
+        origexp = input_expression;
 
         parse_to_infix(input_expression);
 
@@ -41,6 +42,7 @@ namespace lab5 {
         Operators.push(a);
         Eval.push(a);
 
+        convert_to_postfix(newexp);
     }
 
 /*
@@ -109,8 +111,6 @@ void expression::convert_to_postfix(std::string &input_expression) {
         //push onto the stack and pop off if
         //}
 }*/
-
-
     void expression::convert_to_postfix(std::string &input_expression) {
         // need to pop all the operators -> make sure to remove the parentheses (but that also indicates the operator calculation)
         // follow PEMDAS
@@ -147,19 +147,17 @@ void expression::convert_to_postfix(std::string &input_expression) {
                 newlen--;
             } else if (is_operator(value)) //if it's a operator you need to push onto stack
             {//need to to check what's on the stack before you push this operator
-                while (!Operators.isEmpty() && Op != "(" &&
-                       findHigher(value, Operators.top())) //want to stop when you reach a second parentheses
+                while (!Operators.isEmpty() && Op != "(" && findHigher(value, Operators.top())) //want to stop when you reach a second parentheses
                 {
                     Op = Operators.top();
-                    if (Op != ")" && Op != "(" && Op!= " ") {
+                    if (Op != ")" && Op != "(" && Op != " ") {
                         postfix.enqueue(Op);
                     }
                     Operators.pop(); //want to pop when current operator is lower in precedence to the operator at the top of the stack
                 }
-                Operators.push(value);
+                    Operators.push(value);
             }
                 // Else if character is an operand
-
             else if (!is_operator(value) && value != " ") {
                 postfix.enqueue(value); //enqueue if it's a number
             }
@@ -174,6 +172,8 @@ void expression::convert_to_postfix(std::string &input_expression) {
             }
             Operators.pop();
         }
+
+        parse_to_infix(origexp); //reset infixexp so that it can be used for print
 
         length = newlen;
     }
@@ -197,7 +197,11 @@ void expression::convert_to_postfix(std::string &input_expression) {
                 if (input_expression[i] >= 48 && input_expression[i] <= 57) { //add to string if 0-9
                     //newexp[k++] = input_expression[i];
                     newexp.push_back(input_expression[i]);
-                } else {
+                }
+                else if(input_expression[i] == ' '){
+                    continue;
+                }
+                else {
                     infix.enqueue(newexp); //stores value from prev loop
                     newexp.clear(); //reset newexp
                     newexp = "";
@@ -218,12 +222,17 @@ void expression::convert_to_postfix(std::string &input_expression) {
                     infix.enqueue(newexp);
 
                     newlen += 1;
-                } else {
+                }
+                else if(input_expression[i] == ' '){
+                    continue;
+                }
+                else {
                     infix.enqueue(newexp); //stores value from prev loop
                     newexp.clear(); //reset newexp
                     newexp = "";
                     k = 0; //reset counter
                     //newexp[k++] = input_expression[i];
+
                     newexp.push_back(input_expression[i]);
                     infix.enqueue(newexp);
 
@@ -243,7 +252,7 @@ void expression::convert_to_postfix(std::string &input_expression) {
     }
 
     int expression::calculate_postfix() {
-        convert_to_postfix(newexp);
+         //   convert_to_postfix(newexp);
         node *temp = postfix.returnHead();
 
         std::string tempVal1, tempVal2, tempRes, myOp;
@@ -288,7 +297,6 @@ void expression::convert_to_postfix(std::string &input_expression) {
 
     void expression::print_postfix() {
         node *temp = postfix.returnHead();
-
         while (temp != nullptr) { //-> next
             std::cout << temp->data << " ";
             temp = temp->next;
@@ -433,7 +441,7 @@ void expression::convert_to_postfix(std::string &input_expression) {
             result = v1 / v2; //will do integer division
         }
         else{
-            result=0;
+            result=1;
         }
         else if (Op == "+")
             result = v1 + v2;

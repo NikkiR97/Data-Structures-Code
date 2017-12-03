@@ -188,7 +188,7 @@ int main() {
 
    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //lab5 tests
-    std::string infixExp = "10+2-2/3"; //10-6+3*8+5*8
+    std::string infixExp = "1+2+3"; //10-6+3*8+5*8
     int result;
 
     lab5::expression obj11(infixExp);
