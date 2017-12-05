@@ -162,7 +162,7 @@ TEST_F(Lab8_Tests, cocktail_sort){
 
     EXPECT_EQ(sorted0,  sorting_machine.cocktail_sort(*unsorted_list, 0).to_string());
     EXPECT_EQ(sorted1,  sorting_machine.cocktail_sort(*unsorted_list, 1).to_string());
-   // EXPECT_EQ(sorted5,  sorting_machine.cocktail_sort(*unsorted_list, 5).to_string());
+    //EXPECT_EQ(sorted5,  sorting_machine.cocktail_sort(*unsorted_list, 5).to_string());
     EXPECT_EQ(sorted10, sorting_machine.cocktail_sort(*unsorted_list,10).to_string());
     EXPECT_EQ(sorted15, sorting_machine.cocktail_sort(*unsorted_list,15).to_string());
     EXPECT_EQ(sorted20, sorting_machine.cocktail_sort(*unsorted_list,20).to_string());

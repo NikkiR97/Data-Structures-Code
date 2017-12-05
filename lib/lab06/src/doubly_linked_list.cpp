@@ -238,49 +238,54 @@ namespace lab6 {
 
 // Remove the node located at position from the linked list
     void doubly_linked_list::remove(unsigned position) {
-        node *temp = head;
+        if(position!=0) {
+            node *temp = head;
 
-        for (int i = 0; i < position; i++) {
-            if(temp!= nullptr) {
-                temp = temp->next;
+            for (int i = 0; i < position; i++) {
+                if (temp != nullptr) {
+                    temp = temp->next;
+                }
             }
-        }
-        if(!head){ // same as !temp
-            std::cout << "No nodes to remove. " << std::endl;
-        }
-        else if(temp==head && !(temp->next)){ //there is only one node
-            head = nullptr;
-            tail = nullptr;
-            delete temp;
-        }
-        else if(temp==head){
-            temp->next->prev = nullptr;
-            delete temp;
-        }
-        else if(temp==tail){
-            temp->prev->next = nullptr;
-            delete temp;
-        }
-            /*else if(temp->next == nullptr){
+            if (!head) { // same as !temp
+                std::cout << "No nodes to remove. " << std::endl;
+            } else if (temp == head && !(temp->next)) { //there is only one node
+                head = nullptr;
+                tail = nullptr;
+                delete temp;
+            } else if (temp == head) {
+                temp->next->prev = nullptr;
+                delete temp;
+            } else if (temp == tail) {
                 temp->prev->next = nullptr;
                 delete temp;
             }
-            else if(temp->prev == nullptr){
-                temp->next->prev = nullptr;
-                delete temp;
-            }*/
+                /*else if(temp->next == nullptr){
+                    temp->prev->next = nullptr;
+                    delete temp;
+                }
+                else if(temp->prev == nullptr){
+                    temp->next->prev = nullptr;
+                    delete temp;
+                }*/
 
-        else if(temp->next != nullptr && temp->prev != nullptr){ //if there is a node in the front and the back of perspective removed node
-            temp->prev->next = temp->next;
-            temp->next->prev = temp->prev;
-            delete temp;
+            else if (temp->next != nullptr &&
+                     temp->prev != nullptr) { //if there is a node in the front and the back of perspective removed node
+                temp->prev->next = temp->next;
+                temp->next->prev = temp->prev;
+                delete temp;
+            } else if (temp->next == nullptr && temp->prev == nullptr) { //there is only one node
+                //temp=tail;
+                //tail = temp->prev;
+                delete temp;
+            }
+            size--;
         }
-        else if(temp->next == nullptr && temp->prev == nullptr){ //there is only one node
-            //temp=tail;
-            //tail = temp->prev;
-            delete temp;
+        else{
+            node *temp = head ->next;
+            delete head;
+            head= temp;
+            size--;
         }
-        size--;
     }
 
 // Split the list with the node being split on being included in the returned list

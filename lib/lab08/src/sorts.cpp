@@ -84,7 +84,10 @@ lab6::doubly_linked_list sorts::cocktail_sort(lab6::doubly_linked_list input, in
 
     //have to go back and forth until still needs to be swapped
 
-    for(int i=0; i<iterations+1; i++) {
+    int c=0;
+    int n=size;
+
+    for(int i=1; i<=iterations+1; i++) {
 
         if(iterations==0){
             break;//continue;
@@ -92,23 +95,26 @@ lab6::doubly_linked_list sorts::cocktail_sort(lab6::doubly_linked_list input, in
         //if (i%2 == 0) {
             for (int j = 0; j < size-1; j++) {
                 if (working_list.get_data(j) > working_list.get_data(j + 1)) {
-                    working_list.swap_data(j, j+1);
+                    working_list.swap(j, j+1);
                 }
             }
+
         //}
+        iterations--;
         //else if(i%2 == 1){
             for (int j = size-1; j > 0 ; j--) {
                 if (working_list.get_data(j-1) > working_list.get_data(j)) {
-                    working_list.swap_data(j-1, j);
+                    working_list.swap(j-1, j);
                 }
             }
+
 //            for (int j = size-2; j >= 0 ; j--) {
 //                if (working_list.get_data(j) > working_list.get_data(j+1)) {
 //                    working_list.swap(j, j+1);
 //                }
 //            }
         //}
-        i++;
+        //i++;
     }
     return working_list;
 }
@@ -214,9 +220,9 @@ lab6::doubly_linked_list sorts::quick_sort(lab6::doubly_linked_list input) {
 }
 
 lab6::doubly_linked_list sorts::merge_sort(lab6::doubly_linked_list input) {
-    lab6::doubly_linked_list working_list(input);
+  //  lab6::doubly_linked_list working_list(input);
 //
-    int size = working_list.get_size();
+  // int size = working_list.get_size();
    /* lab6::doubly_linked_list obj[size];
 
     for (int i = 0; i < size; i++) {
@@ -308,32 +314,42 @@ lab6::doubly_linked_list sorts::merge_sort(lab6::doubly_linked_list input) {
 
     return A;*/
 
-       /*lab6::doubly_linked_list working_list = input;
-        if(working_list.get_size() <= 1) return working_list;
-        lab6::doubly_linked_list left;
-        lab6::doubly_linked_list right;
-        for(unsigned i = 0; i < working_list.get_size(); i++)
+       lab6::doubly_linked_list working_list = input;
+       int size = working_list.get_size();
+
+
+        if(size <= 1)
+            return working_list;
+
+        lab6::doubly_linked_list L;
+        lab6::doubly_linked_list R;
+
+        for(unsigned i = 0; i < size; i++)
         {
-            if(i < working_list.get_size()/2)
-                left.append(working_list.get_data(i));
+            if(i < size/2)
+                L.append(working_list.get_data(i));
             else
-                right.append(working_list.get_data(i));
+                R.append(working_list.get_data(i));
         }
-        left = merge_sort(left);
-        right = merge_sort(right);
-        return merge(left,right);*/
 
-    //return working_list;
+        L = merge_sort(L);
+        R = merge_sort(R);
+        return merge(L,R);
 
-    for(int i=0; i<size; i++){
+    return working_list;
+
+    /*for(int i=0; i<size; i++){
         for(int j=0; j<size-1; j++){
             if(working_list.get_data(j) > working_list.get_data(j+1)) {
                 working_list.swap(j, j+1);
             }
         }
-    }
+    }*/
 
-    return working_list;//mergeSort(working_list, 0, size-1);
+
+
+    //return mergeSort(working_list, 0, size-1);//working_list;
+    //return Merge2(working_list, 0, size-1);
 }
 
 lab6::doubly_linked_list sorts::radix_sort(lab6::doubly_linked_list input) {
@@ -441,7 +457,7 @@ void sorts::BottomUpMerge(lab6::doubly_linked_list &A, int iLeft, int iRight, in
     }
 }
 
-/*lab6::doubly_linked_list sorts::merge(lab6::doubly_linked_list left, lab6::doubly_linked_list right) //other
+lab6::doubly_linked_list sorts::merge(lab6::doubly_linked_list left, lab6::doubly_linked_list right) //other
 {
     lab6::doubly_linked_list result;
     while (!left.is_empty() && !right.is_empty())
@@ -467,7 +483,7 @@ void sorts::BottomUpMerge(lab6::doubly_linked_list &A, int iLeft, int iRight, in
         right.remove(0);
     }
     return result;
-}*/
+}
 
 void sorts::Merge(lab6::doubly_linked_list &obj, int l, int m, int r)
 {
@@ -476,12 +492,12 @@ void sorts::Merge(lab6::doubly_linked_list &obj, int l, int m, int r)
     int n2 =  r - m;
 
     //int L[n1], R[n2];
-    lab6::doubly_linked_list Left;
-    lab6::doubly_linked_list Right;
+    lab6::doubly_linked_list Left(obj.get_data(1));
+    lab6::doubly_linked_list Right(obj.get_data(1+m));
 
-    for (i = 0; i < n1; i++)
+    for (i = 1; i < n1; i++)
         Left.append(obj.get_data(1+i));//L[i] = arr[l + i];
-    for (j = 0; j < n2; j++)
+    for (j = 1; j < n2; j++)
         Right.append(obj.get_data(m+1+j));//R[j] = arr[m + 1+ j];
 
     i = 0;
@@ -545,9 +561,50 @@ lab6::doubly_linked_list sorts::mergeSort(lab6::doubly_linked_list &obj, int l, 
     //}
 }
 
+
+lab6::doubly_linked_list sorts::Merge2(lab6::doubly_linked_list &obj,int beg, int end){
+    if (beg==end){
+        return obj;
+    }
+    int mid = (beg+end)/2;
+    Merge2(obj,beg,mid);
+    Merge2(obj,mid+1,end);
+    int i=beg,j=mid+1;
+    int l=end-beg+1;
+
+    std::vector<unsigned> val2(1);
+    val2[0] = 0;
+    for(int i=0; i<l-1; i++){
+        val2.push_back(0);
+    }
+
+    lab6::doubly_linked_list obj2(val2);
+    //T *temp = new T [l];
+    for (int k=0;k<l;k++){
+        if (j>end || (i<=mid && obj.get_data(i)<obj.get_data(j))){
+            obj2.setter(k,obj.get_data(i));
+            i++;
+        }
+        else{
+            obj2.setter(k,obj.get_data(j));
+            j++;
+        }
+    }
+    for (int k=0,i=beg;k<l;k++,i++){
+        obj.setter(i,obj2.get_data(k));
+    }
+
+    //return obj;
+    //delete obj2;
+}
+
 lab6::doubly_linked_list sorts::radixsort(lab6::doubly_linked_list &obj, int n)
 {
-    int m = max(obj, n);
+
+    int m = obj.get_data(0);
+    for (int i = 1; i < n; i++)
+        if (obj.get_data(i) > m)
+            m = obj.get_data(i);
 
     for (int exp = 1; m/exp > 0; exp *= 10)
         sort_count(obj, n, exp);
@@ -556,51 +613,53 @@ lab6::doubly_linked_list sorts::radixsort(lab6::doubly_linked_list &obj, int n)
 }
 
 // A utility function to get maximum value in arr[]
-int sorts::max(lab6::doubly_linked_list &obj, int n)
-{
-    int mx = obj.get_data(0);
-    for (int i = 1; i < n; i++)
-        if (obj.get_data(i) > mx)
-            mx = obj.get_data(i);
-    return mx;
-}
+//int sorts::max(lab6::doubly_linked_list &obj, int n)
+//{
+//    int mx = obj.get_data(0);
+//    for (int i = 1; i < n; i++)
+//        if (obj.get_data(i) > mx)
+//            mx = obj.get_data(i);
+//    return mx;
+//}
 
 // A function to do counting sort of arr[] according to
 // the digit represented by exp.
 void sorts::sort_count(lab6::doubly_linked_list &obj, int n, int exp)
 {
-    int output[n]; // output array
-    int i, count[10] = {0};
+    int out[n]; // output array
+    int i, counter[10] = {0};
 
-    std::vector<unsigned> val(10);
-    val = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-    std::vector<unsigned> val2(1);
-    val2[0] = 0;
-    for(int i=0; i<n-1; i++){
-        val2.push_back(0);
-    }
-
-    lab6::doubly_linked_list obj2(val);
-    lab6::doubly_linked_list obj3(val2);
+//    std::vector<unsigned> val(10);
+//    val = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//
+//    std::vector<unsigned> val2(1);
+//    val2[0] = 0;
+//    for(int i=0; i<n-1; i++){
+//        val2.push_back(0);
+//    }
+//
+//    lab6::doubly_linked_list obj2(val);
+//    lab6::doubly_linked_list obj3(val2);
 
     for (i = 0; i < n; i++)
-        count[ (obj.get_data(i)/exp)%10 ]++;
+        counter[ (obj.get_data(i)/exp)%10 ]++;
         //obj2.setter((obj.get_data(i)/exp)%10, obj.get_data((obj.get_data(i)/exp)%10)+1);//obj.get_data((obj.get_data(i)/exp)%10)+1
 
 
     for (i = 1; i < 10; i++)
-        count[i] += count[i - 1];
+        counter[i] += counter[i - 1];
         //obj2.setter(i, obj.get_data(i)+obj.get_data(i-1));
 
     for (i = n - 1; i >= 0; i--)
     {
-        output[count[ (obj.get_data(i)/exp)%10 ] - 1] = obj.get_data(i);
+        out[counter[ (obj.get_data(i)/exp)%10 ] - 1] = obj.get_data(i);
+
+        //obj.setter(count[(obj.get_data(i)/exp)%10 ] - 1, obj.get_data(i));
         //obj3.setter(obj2.get_data((obj.get_data(i)/exp)%10)-1, obj.get_data(i));
-        count[ (obj.get_data(i)/exp)%10 ]--;
+        counter[ (obj.get_data(i)/exp)%10 ]--;
         //obj2.setter((obj.get_data(i)/exp)%10, obj.get_data((obj.get_data(i)/exp)%10)-1);
     }
 
     for (i = 0; i < n; i++)
-        obj.setter(i,output[i]);
+        obj.setter(i,out[i]);
 }

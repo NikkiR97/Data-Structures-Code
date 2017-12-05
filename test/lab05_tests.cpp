@@ -46,7 +46,7 @@ TEST_F(Lab05_Fixture, Pop_Push_Test) {
     test_stack->pop();
     EXPECT_EQ(0,test_stack->stackSize());
     EXPECT_EQ(true,test_stack->isEmpty());
-} //works
+}
 
 TEST_F(Lab05_Fixture, queue_enqueue_test) {
     test_queue=new lab5::queue;
@@ -83,7 +83,7 @@ TEST_F(Lab05_Fixture, queue_enqueue_test) {
     test_queue->dequeue();
     EXPECT_EQ(0,test_queue->queueSize());
     EXPECT_EQ(true,test_queue->isEmpty());
-} //works
+}
 
 TEST_F(Lab05_Fixture, Infix_Postfix_Parsing_Print_Test) {
     std::string output;
@@ -129,7 +129,7 @@ TEST_F(Lab05_Fixture, Infix_Postfix_Parsing_Print_Test) {
 //    test_expression->print_postfix();
 //    output = testing::internal::GetCapturedStdout();
 //    EXPECT_EQ("12 2234 23 / 212 13 - * +",output);
-} //works
+}
 
 TEST_F(Lab05_Fixture, istream_test) {
     test_expression = new lab5::expression;
@@ -142,7 +142,7 @@ TEST_F(Lab05_Fixture, istream_test) {
     test_expression->print_infix();
     output = testing::internal::GetCapturedStdout();
     EXPECT_EQ("1 + 2 - 3", output);
-} //works
+}
 
 TEST_F(Lab05_Fixture, simple_calc_test) {
     std::string sample_string="1+2+3";
@@ -173,7 +173,7 @@ TEST_F(Lab05_Fixture, simple_calc_test) {
     test_expression=new lab5::expression(sample_string);
 
     EXPECT_EQ(7,test_expression->calculate_postfix());
-} //works
+}
 
 TEST_F(Lab05_Fixture, calculate_test_Testcalculate_test) {
     std::string sample_string="32*45-(2+17)";

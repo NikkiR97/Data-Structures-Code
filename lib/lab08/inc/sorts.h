@@ -26,6 +26,8 @@ public:
     int max(lab6::doubly_linked_list &obj, int n);
     void sort_count(lab6::doubly_linked_list &obj, int n, int exp);
 
+    lab6::doubly_linked_list Merge2(lab6::doubly_linked_list &obj,int beg, int end);
+
 };
 
 #endif //CMPE126F17_LABS_SORTS_H
