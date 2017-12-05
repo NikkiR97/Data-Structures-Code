@@ -21,6 +21,7 @@ namespace lab5 {
     }
 
     expression::expression(std::string &input_expression) {
+
         //want to put each element of the string into one node each and omit all the spaces
         length = input_expression.length();
 
@@ -33,16 +34,14 @@ namespace lab5 {
             std::string newinput(first); //convert the first element of the string which has been converted to a character back into a string
             infix.enqueue(newinput); //separate out everything into a node for each
         }*/
-        origexp = input_expression;
 
         parse_to_infix(input_expression);
+        origexp = input_expression;
 
         std::string a = " ";
 
         Operators.push(a);
         Eval.push(a);
-
-        convert_to_postfix(newexp);
     }
 
 /*
@@ -136,21 +135,27 @@ void expression::convert_to_postfix(std::string &input_expression) {
                 Operators.push(value);
                 newlen--;
             } else if (value == ")") {
-                while (!Operators.isEmpty() && Op != "(") {
+                while (!Operators.isEmpty() && Operators.top() != "(") {
                     Op = Operators.top();
                     if (Op != ")" && Op != "(" && Op != " ") {
                         postfix.enqueue(Op);
                     }
                     Operators.pop();
                 }
-                Operators.push(value);
+                if (!Operators.isEmpty() && Operators.top() != "(")
+                    return; // invalid expression
+                else
+                    Operators.pop();
+
+                //Operators.push(value);
                 newlen--;
-            } else if (is_operator(value)) //if it's a operator you need to push onto stack
+            }
+            else if (is_operator(value)) //if it's a operator you need to push onto stack
             {//need to to check what's on the stack before you push this operator
-                while (!Operators.isEmpty() && Op != "(" && findHigher(value, Operators.top())) //want to stop when you reach a second parentheses
+                while (!Operators.isEmpty() && Op != "(" && operator_priority(value) <= operator_priority(Op)) //want to stop when you reach a second parentheses
                 {
                     Op = Operators.top();
-                    if (Op != ")" && Op != "(" && Op != " ") {
+                    if (/*Op != ")" && Op != "(" && */Op != " ") {
                         postfix.enqueue(Op);
                     }
                     Operators.pop(); //want to pop when current operator is lower in precedence to the operator at the top of the stack
@@ -173,7 +178,9 @@ void expression::convert_to_postfix(std::string &input_expression) {
             Operators.pop();
         }
 
-        parse_to_infix(origexp); //reset infixexp so that it can be used for print
+        while(!infix.isEmpty()){
+            infix.dequeue();
+        }
 
         length = newlen;
     }
@@ -181,7 +188,6 @@ void expression::convert_to_postfix(std::string &input_expression) {
     void expression::parse_to_infix(std::string &input_expression) {
         //set the numbers into a queue
         //set the operators into a queue
-
         //std::string newexp = "";
         int k = 0;
 
@@ -194,12 +200,22 @@ void expression::convert_to_postfix(std::string &input_expression) {
                 //     }
                 // }
                 // else{ // 9+20*8-3
-                if (input_expression[i] >= 48 && input_expression[i] <= 57) { //add to string if 0-9
+                if (input_expression[i] >= 48 && input_expression[i] <= 57 ) { //add to string if 0-9
                     //newexp[k++] = input_expression[i];
                     newexp.push_back(input_expression[i]);
                 }
                 else if(input_expression[i] == ' '){
                     continue;
+                }
+                else if(input_expression[i] == '('){
+                    newexp.clear();
+                    newexp = "";
+                    newexp.push_back('(');
+                    infix.enqueue(newexp);
+                    k = 0;
+                    newexp.clear();
+                    newexp = "";
+                    newlen++;
                 }
                 else {
                     infix.enqueue(newexp); //stores value from prev loop
@@ -226,17 +242,25 @@ void expression::convert_to_postfix(std::string &input_expression) {
                 else if(input_expression[i] == ' '){
                     continue;
                 }
+                else if(input_expression[i] == '('){
+                    newexp.clear();
+                    newexp = "";
+                    newexp.push_back('(');
+                }
                 else {
+                    //if(input_expression[i] != '(') {
                     infix.enqueue(newexp); //stores value from prev loop
                     newexp.clear(); //reset newexp
                     newexp = "";
                     k = 0; //reset counter
                     //newexp[k++] = input_expression[i];
+                    newlen += 1;
+                    //}
 
                     newexp.push_back(input_expression[i]);
                     infix.enqueue(newexp);
 
-                    newlen += 2;
+                    newlen += 1;
                 }
             }
         }
@@ -252,7 +276,10 @@ void expression::convert_to_postfix(std::string &input_expression) {
     }
 
     int expression::calculate_postfix() {
-         //   convert_to_postfix(newexp);
+        if(!postfix.returnHead()) {
+            convert_to_postfix(origexp);
+        }
+
         node *temp = postfix.returnHead();
 
         std::string tempVal1, tempVal2, tempRes, myOp;
@@ -296,12 +323,18 @@ void expression::convert_to_postfix(std::string &input_expression) {
     }
 
     void expression::print_postfix() {
+        if(!postfix.returnHead()) {
+            convert_to_postfix(origexp);
+        }
         node *temp = postfix.returnHead();
-        while (temp != nullptr) { //-> next
-            std::cout << temp->data << " ";
+
+        while (temp != nullptr) {
+            std::cout << temp->data;
+            if(temp->next != nullptr){
+                std::cout << " ";
+            }
             temp = temp->next;
         }
-        std::cout << std::endl;
     }
 
     std::istream &operator>>(std::istream &steam, expression &RHS) {
@@ -337,10 +370,10 @@ void expression::convert_to_postfix(std::string &input_expression) {
             return true;
         else if (input_string == "/")
             return true;
-//else if(input_string == "(")
-//return true;
-//else if(input_string == ")")
-//return true;
+else if(input_string == "(")
+return true;
+else if(input_string == ")")
+return true;
         else
             return false;
     }
@@ -357,35 +390,35 @@ void expression::convert_to_postfix(std::string &input_expression) {
     bool expression::findHigher(std::string currentOp, std::string topOperator) {
         int precedence = 0;
 
-        if (currentOp == "*")
+        if (currentOp == "*" || currentOp == "/")
             precedence = 6;
-        else if (currentOp == "/")
-            precedence = 5;
-        else if (currentOp == "+")
+//        else if (currentOp == "/")
+//            precedence = 6;
+        else if (currentOp == "+" || currentOp == "-")
             precedence = 4;
-        else if (currentOp == "-")
-            precedence = 3;
+//        else if (currentOp == "-")
+//            precedence = 3;
         else if (currentOp == "(")
             precedence = 2;
         else if (currentOp == ")")
-            precedence = 1;
+            precedence = 2;
 
-        if (topOperator == "*")
+        if (topOperator == "*" || topOperator == "/")
             precedence = 6;
-        else if (topOperator == "/")
-            precedence = 5;
-        else if (topOperator == "+")
+//        else if (topOperator == "/")
+//            precedence = 6;
+        else if (topOperator == "+" || topOperator == "-")
             precedence = 4;
-        else if (topOperator == "-")
-            precedence = 3;
+//        else if (topOperator == "-")
+//            precedence = 4;
         else if (topOperator == "(")
             precedence = 2;
         else if (topOperator == ")")
-            precedence = 1;
+            precedence = 2;
 
-        if (currentOp > topOperator) {
+        if (currentOp >= topOperator) {
             return true;
-        } else if (currentOp <= topOperator) {
+        } else if (currentOp < topOperator) {
             return false;
         }
     }
@@ -403,20 +436,20 @@ void expression::convert_to_postfix(std::string &input_expression) {
 //not needed for my code
 //}
 
-    int operator_priority(std::string operator_in) {
+    int expression::operator_priority(std::string operator_in) {
         int prec;
-        if (operator_in == "*")
+        if (operator_in == "*" || operator_in == "/")
             prec = 6;
-        else if (operator_in == "/")
-            prec = 5;
-        else if (operator_in == "+")
+//        else if ( operator_in == "/")
+//            prec = 6;
+        else if (operator_in == "+" || operator_in == "-")
             prec = 4;
-        else if (operator_in == "-")
-            prec = 3;
+//        else if (operator_in == "-")
+//            prec = 4;
         else if (operator_in == "(")
             prec = 2;
         else if (operator_in == ")")
-            prec = 1;
+            prec = 2;
 
         return prec;
     }

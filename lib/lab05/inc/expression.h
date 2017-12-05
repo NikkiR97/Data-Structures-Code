@@ -40,6 +40,8 @@ namespace lab5 {
 
         friend std::istream& operator>>(std::istream& steam, expression& RHS);
 
+        int operator_priority(std::string operator_in);
+
     };
 }
 

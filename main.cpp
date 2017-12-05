@@ -188,7 +188,7 @@ int main() {
 
    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //lab5 tests
-    std::string infixExp = "1+2+3"; //10-6+3*8+5*8
+    std::string infixExp = "9/3+4"; //10-6+3*8+5*8
     int result;
 
     lab5::expression obj11(infixExp);
@@ -200,11 +200,22 @@ int main() {
     std::cout << "This is the postfix: " << std::endl;
     //obj11.convert_to_postfix(infixExp);
 
-    result = obj11.calculate_postfix();
 
     obj11.print_postfix();
 
+    std::cout << std::endl;
+    result = obj11.calculate_postfix();
+
     std::cout << "This is the postfix calculated result: " << result << std::endl;
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    lab6::doubly_linked_list obj15(val2);
+    std::cout << "Current object 15: " <<std::endl;
+    obj15.print();
+    std::cout << "Swapped positions 0 and 3" << std::endl;
+    obj15.swap(0, 3);
+    obj15.print();
 
     return 0;
 }

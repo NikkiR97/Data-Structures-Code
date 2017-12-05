@@ -163,6 +163,7 @@ namespace lab6 {
         if (!head) {
             head = new node(data);
             temp = head;
+            tail = head;
         } else {
             while (temp->next != nullptr) {
                 temp = temp->next; //temp will equal wherever next is now pointing to
@@ -247,6 +248,11 @@ namespace lab6 {
         if(!head){ // same as !temp
             std::cout << "No nodes to remove. " << std::endl;
         }
+        else if(temp==head && !(temp->next)){ //there is only one node
+            head = nullptr;
+            tail = nullptr;
+            delete temp;
+        }
         else if(temp==head){
             temp->next->prev = nullptr;
             delete temp;
@@ -269,7 +275,7 @@ namespace lab6 {
             temp->next->prev = temp->prev;
             delete temp;
         }
-        else if(temp->next == nullptr && temp->prev == nullptr){
+        else if(temp->next == nullptr && temp->prev == nullptr){ //there is only one node
             //temp=tail;
             //tail = temp->prev;
             delete temp;
