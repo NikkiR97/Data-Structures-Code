@@ -84,29 +84,32 @@ lab6::doubly_linked_list sorts::cocktail_sort(lab6::doubly_linked_list input, in
 
     //have to go back and forth until still needs to be swapped
 
-    int c=0;
+    int s=0;
     int n=size;
 
-    for(int i=1; i<=iterations+1; i++) {
+    for(int i=0; i<iterations; i++) {
 
         if(iterations==0){
             break;//continue;
         }
         //if (i%2 == 0) {
-            for (int j = 0; j < size-1; j++) {
+            for (int j =s; j < n-1; j++) {
                 if (working_list.get_data(j) > working_list.get_data(j + 1)) {
                     working_list.swap(j, j+1);
                 }
             }
 
         //}
-        iterations--;
+        //iterations--;
+
+        n--;
         //else if(i%2 == 1){
-            for (int j = size-1; j > 0 ; j--) {
+            for (int j = n-1; j > s ; j--) {
                 if (working_list.get_data(j-1) > working_list.get_data(j)) {
                     working_list.swap(j-1, j);
                 }
             }
+        s++;
 
 //            for (int j = size-2; j >= 0 ; j--) {
 //                if (working_list.get_data(j) > working_list.get_data(j+1)) {
